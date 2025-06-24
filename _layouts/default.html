@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    header { margin-bottom: 2rem; }
+    .tab { overflow: hidden; border-bottom: 1px solid #ccc; }
+    .tablinks { background-color: inherit; border: none; outline: none; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; }
+    .tablinks:hover { background-color: #ddd; }
+    .tablinks.active { background-color: #ccc; }
+    .tabcontent { display: none; padding: 1rem 0; }
+  </style>
+  {{ content_for_header }}
+</head>
+<body>
+  <header>
+    <h1><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
+  </header>
+  <main>
+    {{ content }}
+  </main>
+  <footer>
+    <p>&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}</p>
+  </footer>
+  <script>
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      var firstTab = document.querySelector(".tablinks");
+      if (firstTab) firstTab.click();
+    });
+  </script>
+</body>
+</html>
