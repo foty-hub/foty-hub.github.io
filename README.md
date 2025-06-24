@@ -5,7 +5,7 @@ Academic Portfolio Website
 This repository hosts my academic portfolio, showcasing my research interests, publications, and projects.
 
 ## Viewing the Site
-You can view the live site at: https://<username>.github.io
+You can view the live site at: https://foty-hub.github.io
 
 ## Local Preview
 If you have Jekyll installed, you can preview the site locally:
@@ -14,6 +14,6 @@ jekyll serve
 ```
 
 ## Author
-- **Name:** Your Name
-- **Affiliation:** Your Institution
-- **Email:** your.email@example.com
+- **Name:** Alex Inch
+- **Affiliation:** UCL
+- **Email:** alexinch96@yahoo.com
