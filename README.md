@@ -16,4 +16,4 @@ jekyll serve
 ## Author
 - **Name:** Alex Inch
 - **Affiliation:** UCL
-- **Email:** alexinch96@yahoo.com
+- **Email:** alexinch96 (at) yahoo (dot) com
