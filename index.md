@@ -13,12 +13,12 @@ title: Home
   <h2>About</h2>
   <p>Hello! I'm <strong>Alex</strong>, currently doing a MSc at <em>UCL</em> in Machine Learning. I'll be starting a DPhil in AI & Robotics at Oxford in the Autumn, supervised by Ingmar Posner. My research interests are world models, agentic systems and open-endedness.</p>
 </div>
-<!-- 
+
 <div id="Research" class="tabcontent">
   <h2>Research</h2>
   <ul>
-    <li>Project A: Description of project A.</li>
-    <li>Project B: Description of project B.</li>
+    <li>Conformal Reinforcement Learning (MSc Thesis): Investigating the application of conformal prediction to the reinforcement learning setting.</li>
+    <li>BanditPrompt: An open-ended system for evolving interesting images</li>
   </ul>
 </div>
 
@@ -28,4 +28,4 @@ title: Home
     <li>Doe, J. (2021). Title of paper. <em>Journal Name</em>.</li>
     <li>Doe, J., &amp; Smith, A. (2020). Title of another paper. <em>Conference Name</em>.</li>
   </ul>
-</div> -->
+</div>
