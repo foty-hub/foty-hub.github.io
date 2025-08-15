@@ -4,8 +4,8 @@ description: "A personal academic website."
 baseurl: ""
 url: "https://foty-hub.github.io"
 author:
-  name: "Your Name"
-  email: "your.email@example.com"
+  name: "Alex Inch"
+  email: ""
 
 collections:
   posts:

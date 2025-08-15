@@ -4,9 +4,10 @@ title: Home
 ---
 
 <div class="tab">
-  <button class="tablinks" onclick="openTab(event, 'About')">About</button>
+  <button class="tablinks" onclick="openTab(event, 'About')">Home</button>
   <button class="tablinks" onclick="openTab(event, 'Research')">Research</button>
   <button class="tablinks" onclick="openTab(event, 'Publications')">Publications</button>
+  <button class="tablinks" onclick="window.location.href='/blog.md'">Blog</button>
 </div>
 
 <div id="About" class="tabcontent">
