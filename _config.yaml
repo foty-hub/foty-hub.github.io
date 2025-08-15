@@ -7,6 +7,9 @@ author:
   name: "Alex Inch"
   email: ""
 
+# Site-wide content max width (CSS length)
+max_width: "820px"
+
 collections:
   posts:
     output: true

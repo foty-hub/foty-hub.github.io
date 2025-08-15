@@ -13,6 +13,9 @@
     .tablinks:hover { background-color: #ddd; }
     .tablinks.active { background-color: #ccc; }
     .tabcontent { display: none; padding: 1rem 0; }
+    main { max-width: {{ site.max_width | default: '820px' }}; margin: 0 auto; }
+    article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-size: 1.1rem; line-height: 1.4; }
+    @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
   </style>
   {{ content_for_header }}
 </head>
