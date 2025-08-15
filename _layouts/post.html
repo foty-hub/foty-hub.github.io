@@ -1,7 +1,24 @@
 ---
 layout: default
 ---
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    header { margin-bottom: 2rem; }
+    .tab { overflow: hidden; border-bottom: 1px solid #ccc; }
+    .tablinks { background-color: inherit; border: none; outline: none; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; display: inline-block; text-decoration: none; color: inherit; }
+    .tablinks:hover { background-color: #ddd; }
+    .tablinks.active { background-color: #ccc; }
+    .tabcontent { display: none; padding: 1rem 0; }
+    main { max-width: {{ site.max_width | default: '820px' }}; margin: 0; }
+    article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-size: 1.1rem; line-height: 1.4; }
+    @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
+  </style>
+</head>
 <article>
   <h1>{{ page.title }}</h1>
   {% if page.subtitle %}
