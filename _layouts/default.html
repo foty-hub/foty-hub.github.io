@@ -9,7 +9,7 @@
     body { font-family: Arial, sans-serif; margin: 2rem; }
     header { margin-bottom: 2rem; }
     .tab { overflow: hidden; border-bottom: 1px solid #ccc; }
-    .tablinks { background-color: inherit; border: none; outline: none; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; }
+    .tablinks { background-color: inherit; border: none; outline: none; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; display: inline-block; text-decoration: none; color: inherit; }
     .tablinks:hover { background-color: #ddd; }
     .tablinks.active { background-color: #ccc; }
     .tabcontent { display: none; padding: 1rem 0; }
@@ -19,6 +19,7 @@
 <body>
   <header>
     <h1><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
+    {% include navbar.html %}
   </header>
   <main>
     {{ content }}
@@ -27,22 +28,52 @@
     <p>&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}</p>
   </footer>
   <script>
-    function openTab(evt, tabName) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
-      document.getElementById(tabName).style.display = "block";
-      evt.currentTarget.className += " active";
-    }
     document.addEventListener("DOMContentLoaded", function() {
-      var firstTab = document.querySelector(".tablinks");
-      if (firstTab) firstTab.click();
+      var tabContents = document.querySelectorAll('.tabcontent');
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav.tab .tablinks'));
+
+      function setActiveLink(predicate) {
+        navLinks.forEach(function(l){ l.classList.remove('active'); });
+        var active = navLinks.find(predicate);
+        if (active) active.classList.add('active');
+      }
+
+      // If this page has tab content (home), wire up in-page tabs
+      if (tabContents.length > 0) {
+        function showTab(id) {
+          tabContents.forEach(function(c){ c.style.display = 'none'; });
+          var el = document.getElementById(id);
+          if (el) el.style.display = 'block';
+          setActiveLink(function(l){ return (l.getAttribute('href') || '').endsWith('#' + id); });
+        }
+
+        // Click handlers on in-page links
+        navLinks.forEach(function(link){
+          var href = link.getAttribute('href') || '';
+          if (href.indexOf('#') !== -1) {
+            link.addEventListener('click', function(e){
+              var hash = (link.hash || '').replace('#','');
+              if (hash) {
+                e.preventDefault();
+                history.replaceState(null, '', '#' + hash);
+                showTab(hash);
+              }
+            });
+          }
+        });
+
+        // Initial tab: from hash or default to About
+        var initial = (location.hash || '#About').replace('#','');
+        showTab(initial);
+      } else {
+        // No tab contents present (e.g., blog pages): set active nav by path
+        var path = location.pathname;
+        if (path.indexOf('/blog') === 0) {
+          setActiveLink(function(l){ return (l.getAttribute('href') || '').indexOf('/blog') !== -1; });
+        } else {
+          setActiveLink(function(l){ return (l.getAttribute('href') || '').replace(location.origin, '') === '/'; });
+        }
+      }
     });
   </script>
 </body>
