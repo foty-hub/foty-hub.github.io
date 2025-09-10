@@ -11,8 +11,8 @@ title: Home
 <div id="Research" class="tabcontent">
   <h2>Research</h2>
   <ul>
-    <li>Conformal Reinforcement Learning (MSc Thesis): Investigating the application of conformal prediction to the reinforcement learning setting.</li>
-    <li>BanditPrompt: An open-ended system for evolving interesting images</li>
+    <li>Conformal Calibration (MSc Thesis): I came up with a trick to apply conformal prediction to trained DQNs to make them more robust.</li>
+    <li>Evolve to Inspire: An open-ended system for evolving interesting images</li>
   </ul>
 </div>
 
