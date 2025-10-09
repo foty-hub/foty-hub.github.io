@@ -1,0 +1,36 @@
+<!-- KaTeX CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+
+<!-- KaTeX core and auto-render -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<!-- Initialize KaTeX auto-render on page load -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof renderMathInElement !== 'function') return;
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'code', 'pre'],
+      throwOnError: false
+    });
+  });
+  // Optional: re-render on Turbolinks-like navigation if used in future
+  document.addEventListener('turbolinks:load', function(){
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body);
+    }
+  });
+  document.addEventListener('pjax:complete', function(){
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body);
+    }
+  });
+  
+</script>
+

@@ -18,6 +18,9 @@
     @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
   </style>
   {{ content_for_header }}
+  {% if page.math or site.math %}
+    {% include math.html %}
+  {% endif %}
 </head>
 <body>
   <header>
