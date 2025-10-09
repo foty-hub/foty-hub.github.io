@@ -5,7 +5,7 @@ title: Home
 
 <div id="About" class="tabcontent">
   <h2>About</h2>
-  <p>Hello! I'm <strong>Alex</strong>, I'm studying for a DPhil in AI & Robotics at the [Applied AI Lab](https://ori.ox.ac.uk/labs/a2i/) at Oxford, as part of the [RAINZ CDT](https://www.rainz-cdt.ac.uk/). I work on world models for robotics, supervised by Professor Ingmar Posner. My research interests are world models, autonomous agentic systems and reinforcement learning.</p>
+  <p>Hello! I'm <strong>Alex</strong>, I'm studying for a DPhil in AI & Robotics at the <a href="https://ori.ox.ac.uk/labs/a2i/">Applied AI Lab</a> at Oxford, as part of the <a href="https://www.rainz-cdt.ac.uk/">RAINZ CDT</a>. I work on world models for robotics, supervised by Professor Ingmar Posner. My research interests are world models, autonomous agentic systems and reinforcement learning.</p>
 </div>
 
 <div id="Research" class="tabcontent">
