@@ -7,7 +7,7 @@ math: true
 
 The link between world models and predictive coding
 
-I've recently finished reading two great books: *The Experience Machine* by Andy Clark and *Active Inference* by Parr, Pezzulo and Friston. Both books fundamentally discuss how the brain works in a way that might cause ML practitioners to rethink their methods. 
+I've recently finished reading two great books: [*The Experience Machine*](https://uk.bookshop.org/p/books/the-experience-machine-how-our-minds-predict-and-shape-reality-andy-clark/7007773) by Andy Clark and [*Active Inference*](https://uk.bookshop.org/p/books/active-inference-the-free-energy-principle-in-mind-brain-and-behavior-giovanni-pezzulo/f1ce44ee99e81fee?ean=9780262553995&next=t) by Parr, Pezzulo and Friston. Both books fundamentally discuss how the brain works in a way that might cause ML practitioners to rethink their methods. 
 
 Traditionally, neuroscience (and ML) has operated on a relatively simple computational model: we perceive the environment around us; process and reason about what we sense; and then execute an action to achieve whatever goal we're aiming for. And then that repeats, forever.
 
