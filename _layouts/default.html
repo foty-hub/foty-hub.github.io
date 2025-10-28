@@ -16,6 +16,17 @@
     main { max-width: {{ site.max_width | default: '820px' }};}
     article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-size: 1.1rem; line-height: 1.4; }
     @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
+    /* Research section layout */
+    .research-list { display: grid; gap: 1.25rem; }
+    .research-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .research-media { flex: 0 0 120px; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; background: #e9ecef; }
+    .research-media img, .research-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .research-content h3 { margin: 0 0 0.25rem; font-size: 1.1rem; }
+    .research-content p { margin: 0; }
+    @media (max-width: 640px) {
+      .research-item { flex-direction: column; }
+      .research-media { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+    }
   </style>
   {{ content_for_header }}
   {% if page.math or site.math %}
