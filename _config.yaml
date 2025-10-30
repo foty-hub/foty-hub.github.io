@@ -14,3 +14,8 @@ collections:
   posts:
     output: true
     permalink: /blog/:title
+social:
+  linkedin: "https://www.linkedin.com/in/alex-inch/"
+  github: "https://github.com/foty-hub"
+  x: "https://x.com/alexinch_ai"
+  bluesky: "https://bsky.app/profile/alexinch.bsky.social"

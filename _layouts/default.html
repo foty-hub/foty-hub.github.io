@@ -33,6 +33,15 @@
     @media (max-width: 640px) {
       main section { margin-top: 5em; }
     }
+    /* Footer social icons */
+    .site-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ccc; }
+    .social-icons { display: flex; gap: 0.75rem; }
+    .social-icons a { display: inline-flex; width: 22px; height: 22px; align-items: center; justify-content: center; text-decoration: none; }
+    .social-icons img { width: 22px; height: 22px; display: block; filter: brightness(0) saturate(100%); opacity: 0.9; transition: opacity .15s ease-in-out; }
+    .social-icons a:hover img { opacity: 1; }
+    @media (prefers-color-scheme: dark) {
+      .site-footer { border-top-color: #444; }
+    }
   </style>
   {{ content_for_header }}
   {% if page.math or site.math %}
@@ -47,8 +56,31 @@
   <main>
     {{ content }}
   </main>
-  <footer>
+  <footer class="site-footer">
     <p>&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}</p>
+    <nav class="social-icons" aria-label="Social links">
+      {% assign social = site.social | default: {} %}
+      {% if social.linkedin %}
+        <a href="{{ social.linkedin }}" aria-label="LinkedIn" target="_blank" rel="me noopener noreferrer">
+          <img src="{{ '/assets/icons/linkedin.svg' | relative_url }}" alt="LinkedIn">
+        </a>
+      {% endif %}
+      {% if social.github %}
+        <a href="{{ social.github }}" aria-label="GitHub" target="_blank" rel="me noopener noreferrer">
+          <img src="{{ '/assets/icons/github.svg' | relative_url }}" alt="GitHub">
+        </a>
+      {% endif %}
+      {% if social.x %}
+        <a href="{{ social.x }}" aria-label="X" target="_blank" rel="me noopener noreferrer">
+          <img src="{{ '/assets/icons/x.svg' | relative_url }}" alt="X">
+        </a>
+      {% endif %}
+      {% if social.bluesky %}
+        <a href="{{ social.bluesky }}" aria-label="Bluesky" target="_blank" rel="me noopener noreferrer">
+          <img src="{{ '/assets/icons/bluesky.svg' | relative_url }}" alt="Bluesky">
+        </a>
+      {% endif %}
+    </nav>
   </footer>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
