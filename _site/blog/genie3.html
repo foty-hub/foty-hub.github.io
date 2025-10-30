@@ -19,13 +19,19 @@
     /* Research section layout */
     .research-list { display: grid; gap: 1.25rem; }
     .research-item { display: flex; align-items: flex-start; gap: 1rem; }
-    .research-media { flex: 0 0 120px; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; background: #e9ecef; }
+    .research-media { flex: 0 0 160px; width: 160px; height: 160px; border-radius: 8px; overflow: hidden; background: #e9ecef; }
     .research-media img, .research-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .research-content h3 { margin: 0 0 0.25rem; font-size: 1.1rem; }
     .research-content p { margin: 0; }
     @media (max-width: 640px) {
       .research-item { flex-direction: column; }
       .research-media { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+    }
+    /* Section spacing - a few line breaks */
+    main section { margin-top: 5em; }
+    main section:first-of-type { margin-top: 0; }
+    @media (max-width: 640px) {
+      main section { margin-top: 5em; }
     }
   </style>
   
@@ -36,9 +42,6 @@
     <h1><a href="/"></a></h1>
     <nav class="tab" aria-label="Primary">
   <a class="tablinks" href="/">Home</a>
-  <a class="tablinks" href="/#about">About</a>
-  <a class="tablinks" href="/#research">Research</a>
-  <a class="tablinks" href="/#publications">Publications</a>
   <a class="tablinks" href="/blog">Blog</a>
 </nav>
 
@@ -90,14 +93,14 @@ figure.video figcaption { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1
 
 <figure class="video">
   <video width="560" height="315" controls="">
-    <source src="/videos/jetski.mp4" type="video/mp4" />
+    <source src="/assets/videos/jetski.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
   <figcaption>The collision at 0:25 transfers no momentum to the other boat, in contrast to realistic interactions at 0:05.</figcaption>
 </figure>
 <figure class="video">
   <video width="560" height="315" controls="">
-    <source src="/videos/leaves_static.mp4" type="video/mp4" />
+    <source src="/assets/videos/leaves_static.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
   <figcaption>The agent doesn't collide with the foliage, even walking through it at 0:39.</figcaption>
@@ -110,7 +113,7 @@ figure.video figcaption { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1
 
 <figure class="video">
   <video width="560" height="315" controls="">
-    <source src="/videos/hose.mp4" type="video/mp4" />
+    <source src="/assets/videos/hose.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
   <figcaption>The agent navigates to a hose as instructed, but that's all it can do.</figcaption>
@@ -121,7 +124,7 @@ figure.video figcaption { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1
 
 <figure class="video">
   <video width="560" height="315" controls="">
-    <source src="/videos/critter.mp4" type="video/mp4" />
+    <source src="/assets/videos/critter.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
   <figcaption>At 0:22 the characters jumps without the agent pressing a button.</figcaption>
@@ -129,7 +132,7 @@ figure.video figcaption { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1
 
 <figure class="video">
   <video width="560" height="315" controls="">
-    <source src="/videos/cat_reverse.mp4" type="video/mp4" />
+    <source src="/assets/videos/cat_reverse.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
   <figcaption>Initially, the cat follows the path without action inputs. ↑ initially faces the cat forwards, but later directs it backwards. The jump button only works inconsistently.</figcaption>
@@ -137,7 +140,7 @@ figure.video figcaption { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1
 
 <figure class="video">
   <video width="560" height="315" controls="">
-    <source src="/videos/vaporetto.mp4" type="video/mp4" />
+    <source src="/assets/videos/vaporetto.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
   <figcaption>Hitting ↑ has no effect on the boat's forward motion.</figcaption>

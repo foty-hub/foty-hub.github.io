@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Small_models - </title>
+  <title>The Small Model Fallacy - </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <style>
     body { font-family: Arial, sans-serif; margin: 2rem; }
@@ -19,13 +19,19 @@
     /* Research section layout */
     .research-list { display: grid; gap: 1.25rem; }
     .research-item { display: flex; align-items: flex-start; gap: 1rem; }
-    .research-media { flex: 0 0 120px; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; background: #e9ecef; }
+    .research-media { flex: 0 0 160px; width: 160px; height: 160px; border-radius: 8px; overflow: hidden; background: #e9ecef; }
     .research-media img, .research-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .research-content h3 { margin: 0 0 0.25rem; font-size: 1.1rem; }
     .research-content p { margin: 0; }
     @media (max-width: 640px) {
       .research-item { flex-direction: column; }
       .research-media { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+    }
+    /* Section spacing - a few line breaks */
+    main section { margin-top: 5em; }
+    main section:first-of-type { margin-top: 0; }
+    @media (max-width: 640px) {
+      main section { margin-top: 5em; }
     }
   </style>
   
@@ -36,9 +42,6 @@
     <h1><a href="/"></a></h1>
     <nav class="tab" aria-label="Primary">
   <a class="tablinks" href="/">Home</a>
-  <a class="tablinks" href="/#about">About</a>
-  <a class="tablinks" href="/#research">Research</a>
-  <a class="tablinks" href="/#publications">Publications</a>
   <a class="tablinks" href="/blog">Blog</a>
 </nav>
 
@@ -47,7 +50,7 @@
     <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Small_models - </title>
+  <title>The Small Model Fallacy - </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <style>
     body { font-family: Arial, sans-serif; margin: 2rem; }
@@ -63,10 +66,43 @@
   </style>
 </head>
 <article>
-  <h1>Small_models</h1>
+  <h1>The Small Model Fallacy</h1>
+  
+  <p class="subtitle">Why don't we just train small models like AlphaFold?</p>
   
   <div>
-    
+    <p>Gary Marcus recently wrote an op-ed <a href="https://www.nytimes.com/2025/10/16/opinion/ai-specialized-potential.html?unlocked_article_code=1.vE8.YxVe.eTXf6Ny5--gn&amp;smid=url-share">in the New York Times</a> complaining about the current obsession with LLMs:</p>
+
+<blockquote>
+  <p><em>the tech industry should stop focusing so heavily on these one-size-fits-all tools and instead concentrate on narrow, specialized A.I. tools engineered for particular problems.</em></p>
+</blockquote>
+
+<p>This has become an increasingly common refrain. In <a href="https://www.youtube.com/watch?v=042N0H_pjj0">an interview with Hard Fork</a>, <em>Empire of AI</em> author Karen Hao also advocated the use of “task-specific” AI over large models. The problem is that this small-model approach (which I’m not necessarily opposed to) relies on glossing over a lot of messy detail.</p>
+
+<h2 id="specifically-tasked">Specifically-Tasked</h2>
+<p>In his article, Marcus makes the case that chessbots are much better at chess than ChatGPT. You might infer from that example that task-specific AIs are always better than LLMs and more general models, right? Wrong. A chessbot beats an LLM at chess. But an LLM</p>
+
+<p>Chessbot TKTTKKT.</p>
+
+<p>And that’s not to say that, if anything, training a chessbot is deeply inefficient. If you want it to learn to play checkers, it has to be retrained from scratch.</p>
+
+<h2 id="who-decides-the-tasks">Who decides the tasks</h2>
+<p>One of the most interesting aspects of LLMs is that they have completely blown open the</p>
+
+<h2 id="the-bitter-lesson">The Bitter Lesson</h2>
+<p>People love to talk about AlphaFold and DeepMind’s older work like they were examples of low-scale efficiency. But it totally ignores that, in fact, DeepMind’s first major breakthrough was massively <em>scaling</em> Reinforcement Learning</p>
+
+<h2 id="the-scientific-reality">The Scientific Reality</h2>
+<p>Another kind of undercurrent to these arguments is that LLMs are woefully inefficient and we should just <em>do things differently.</em> But here’s the thing: no one knows how to. Until OpenAI scaled up GPT-2 and GPT-3, no one had any idea what these models would be capable of achieving. Until labs started introducing RL from Verifiable Rewards (otherwise known as reasoning models or GRPO training), no one had any idea that LLMs could be trained effectively to solve difficult maths problems. These labs are not trying to solve a known problem, they are discovering new technologies and innovating new things. First comes the discovery, then refinement can happen later - but we’re still firmly in the innovation and discovery phase. It’s as if we asked scientists who discovered a novel drug to make it differently, without acknowledging that they’re out at the precipice of human understanding.</p>
+
+<h2 id="the-best-way-to-get-small-models">The Best Way to Get Small Models</h2>
+<p>Currently, the most effective way to train small language models is as follows:</p>
+
+<ol>
+  <li>Train a big model.</li>
+  <li>Distil the big model into a small one.</li>
+</ol>
+
 
   </div>
   <p>Posted on October 28, 2025</p>
