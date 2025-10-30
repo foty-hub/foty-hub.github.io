@@ -59,7 +59,7 @@
   <footer class="site-footer">
     <p>&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}</p>
     <nav class="social-icons" aria-label="Social links">
-      {% assign social = site.social | default: {} %}
+      {% assign social = site.social %}
       {% if social.linkedin %}
         <a href="{{ social.linkedin }}" aria-label="LinkedIn" target="_blank" rel="me noopener noreferrer">
           <img src="{{ '/assets/icons/linkedin.svg' | relative_url }}" alt="LinkedIn">
