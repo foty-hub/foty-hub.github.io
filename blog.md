@@ -5,8 +5,10 @@ title: Blog
 
 <h1>{{ page.title }}</h1>
 
+{% assign visible_posts = site.posts | where_exp: "post", "post.draft != true" %}
+
 <ul>
-  {% for post in site.posts %}
+  {% for post in visible_posts %}
     <li>
       <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
       <p>{{ post.subtitle }}</p>

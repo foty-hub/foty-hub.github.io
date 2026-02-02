@@ -3,6 +3,7 @@ layout: post
 title: "The Predictive Brain"
 subtitle: "The link between world models and the brain"
 math: true
+draft: true
 ---
 
 I've recently finished reading two great books: [*The Experience Machine*](https://uk.bookshop.org/p/books/the-experience-machine-how-our-minds-predict-and-shape-reality-andy-clark/7007773) by Andy Clark and [*Active Inference*](https://uk.bookshop.org/p/books/active-inference-the-free-energy-principle-in-mind-brain-and-behavior-giovanni-pezzulo/f1ce44ee99e81fee?ean=9780262553995&next=t) by Parr, Pezzulo and Friston. Both books discuss what I'll call predictive coding—a new approach to thinking about how our brains work brain works which has signficant ramifications for anyone working on machine learning.

@@ -2,6 +2,7 @@
 layout: post
 title: "The Small Model Fallacy"
 subtitle: "Why don't we just train small models like AlphaFold?"
+draft: true
 ---
 
 Gary Marcus recently wrote an op-ed [in the New York Times](https://www.nytimes.com/2025/10/16/opinion/ai-specialized-potential.html?unlocked_article_code=1.vE8.YxVe.eTXf6Ny5--gn&smid=url-share) complaining about the current obsession with LLMs:
@@ -31,5 +32,4 @@ Currently, the most effective way to train small language models is as follows:
 
 1. Train a big model.
 2. Distil the big model into a small one.
-
 
