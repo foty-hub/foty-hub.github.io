@@ -10,7 +10,7 @@ You can view the live site at: https://alexinch.com
 ## Local Preview
 If you have Jekyll installed, you can preview the site locally:
 ```bash
-jekyll serve
+bundle exec jekyll serve
 ```
 
 To install Jekyll, follow these [steps first](https://jekyllrb.com/docs/installation/macos/)
