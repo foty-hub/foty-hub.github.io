@@ -30,6 +30,24 @@
     main { max-width: {{ site.max_width | default: '820px' }};}
     article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-size: 1.1rem; line-height: 1.4; }
     @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
+    /* Shared media blocks used in posts (videos/SVG illustrations). */
+    figure.media-block,
+    figure.video,
+    figure.illustration { margin: 1.25rem 0; max-width: 560px; }
+    figure.media-block img,
+    figure.media-block video,
+    figure.video img,
+    figure.video video,
+    figure.illustration img,
+    figure.illustration video { display: block; width: 100%; height: auto; border-radius: 6px; }
+    figure.media-block figcaption,
+    figure.video figcaption,
+    figure.illustration figcaption { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.4; color: #666; text-align: center; }
+    @media (prefers-color-scheme: dark) {
+      figure.media-block figcaption,
+      figure.video figcaption,
+      figure.illustration figcaption { color: #9aa0a6; }
+    }
     /* Research section layout */
     .research-list { display: grid; gap: 1.25rem; }
     .research-item { display: flex; align-items: flex-start; gap: 1rem; }
