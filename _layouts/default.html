@@ -30,6 +30,70 @@
     main { max-width: {{ site.max_width | default: '820px' }};}
     article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-size: 1.1rem; line-height: 1.4; }
     @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
+    /* Blog feature link and book notes post. */
+    .blog-feature {
+      margin: 0 0 2.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .blog-feature h2 { margin-bottom: 0.25rem; }
+    .blog-feature p { margin-top: 0; color: #666; line-height: 1.5; }
+    details.book-note {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+    details.book-note + details.book-note { border-top: 0; }
+    details.book-note summary {
+      cursor: pointer;
+      line-height: 1.35;
+      padding: 0.75rem 0.25rem;
+      user-select: none;
+    }
+    details.book-note summary:hover { background: #f7f7f7; }
+    details.book-note summary .book-row {
+      display: inline-grid;
+      grid-template-columns: 4rem minmax(0, 1fr);
+      column-gap: 0.75rem;
+      width: calc(100% - 1rem);
+      vertical-align: top;
+    }
+    details.book-note summary cite {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+    }
+    details.book-note[open] { padding-bottom: 0.5rem; }
+    .book-date {
+      color: #666;
+      display: inline-block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .book-notes-content li .book-date { margin-right: 0.45rem; }
+    .book-rating,
+    .book-status { color: #666; white-space: nowrap; }
+    .book-notes-content > h2 {
+      line-height: 1.35;
+      margin: 1rem 0 0.35rem;
+    }
+    details.book-note > :not(summary) {
+      line-height: 1.6;
+      margin-left: 1.4rem;
+      margin-right: 0.25rem;
+    }
+    details.book-note summary + * { margin-top: 0; }
+    .blog-posts { margin-top: 3rem; }
+    @media (prefers-color-scheme: dark) {
+      .blog-feature,
+      details.book-note { border-color: #444; }
+      .blog-feature p { color: #9aa0a6; }
+      details.book-note summary:hover { background: #1f242a; }
+      .book-date,
+      .book-rating,
+      .book-status { color: #9aa0a6; }
+    }
     /* Shared media blocks used in posts (videos/SVG illustrations). */
     figure.media-block,
     figure.video,
@@ -188,5 +252,120 @@
       }
     });
   </script>
+  {% if page.book_notes %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var content = document.querySelector('.book-notes-content');
+      if (!content) return;
+
+      function parseBookHeading(heading) {
+        var text = heading.textContent.trim().replace(/\s+/g, ' ');
+        var match = text.match(/^([A-Z][a-z]{2}\s+\d{2})\s*\|\s*(.+)$/);
+        if (!match) return null;
+
+        var date = match[1];
+        var rest = match[2];
+        var titleEl = heading.querySelector('em');
+        var title = titleEl ? titleEl.textContent.trim() : '';
+        var trailing = rest;
+
+        if (title) {
+          var titleIndex = rest.indexOf(title);
+          if (titleIndex !== -1) {
+            trailing = rest.slice(titleIndex + title.length).trim();
+          }
+        }
+
+        trailing = trailing.replace(/^by\s+/i, '');
+        var status = '';
+        var statusMatch = trailing.match(/\s+\(([^)]+)\)\s*$/);
+        if (statusMatch) {
+          status = statusMatch[1];
+          trailing = trailing.slice(0, statusMatch.index).trim();
+        }
+
+        if (!title) {
+          var fallback = rest.match(/^(.+?)(?:\s+by\s+(.+?))?(?:\s+\(([^)]+)\))?$/);
+          if (!fallback) return null;
+          title = fallback[1].trim();
+          trailing = fallback[2] ? fallback[2].trim() : '';
+          status = fallback[3] || status;
+        }
+
+        return { date: date, title: title, author: trailing, status: status };
+      }
+
+      function buildSummary(book) {
+        var summary = document.createElement('summary');
+        var row = document.createElement('span');
+        var date = document.createElement('span');
+        var main = document.createElement('span');
+        var title = document.createElement('cite');
+
+        row.className = 'book-row';
+        date.className = 'book-date';
+        main.className = 'book-main';
+
+        date.textContent = book.date;
+        title.textContent = book.title;
+        main.appendChild(title);
+
+        if (book.author) {
+          main.appendChild(document.createTextNode(', ' + book.author));
+        }
+
+        if (book.status) {
+          var status = document.createElement('span');
+          status.className = /^\d+\/\d+$/.test(book.status) ? 'book-rating' : 'book-status';
+          status.textContent = ' (' + book.status + ')';
+          main.appendChild(status);
+        }
+
+        row.appendChild(date);
+        row.appendChild(main);
+        summary.appendChild(row);
+        return summary;
+      }
+
+      Array.prototype.slice.call(content.querySelectorAll('h2')).forEach(function(heading) {
+        var book = parseBookHeading(heading);
+        if (!book) return;
+
+        var details = document.createElement('details');
+        details.className = 'book-note';
+        details.appendChild(buildSummary(book));
+
+        var node = heading.nextSibling;
+        while (node && !(node.nodeType === 1 && node.tagName.toLowerCase() === 'h2')) {
+          var next = node.nextSibling;
+          details.appendChild(node);
+          node = next;
+        }
+
+        heading.parentNode.insertBefore(details, heading);
+        heading.remove();
+      });
+
+      var todoHeading = content.querySelector('#to-write-up');
+      var todoList = todoHeading && todoHeading.nextElementSibling;
+      if (todoList && todoList.tagName.toLowerCase() === 'ul') {
+        Array.prototype.slice.call(todoList.querySelectorAll('li')).forEach(function(item) {
+          var first = item.firstChild;
+          if (!first || first.nodeType !== Node.TEXT_NODE) return;
+
+          var match = first.nodeValue.match(/^([A-Z][a-z]{2}\s+\d{2})\s+-\s*/);
+          if (!match) return;
+
+          var date = document.createElement('span');
+          date.className = 'book-date';
+          date.textContent = match[1];
+          first.nodeValue = first.nodeValue.slice(match[0].length);
+          item.insertBefore(document.createTextNode(' '), first);
+          item.insertBefore(date, item.firstChild);
+        });
+      }
+    });
+  </script>
+  {% endif %}
 </body>
 </html>

@@ -20,12 +20,12 @@ layout: default
     @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
   </style>
 </head>
-<article>
+<article{% if page.book_notes %} class="book-notes-post"{% endif %}>
   <h1>{{ page.title }}</h1>
   {% if page.subtitle %}
   <p class="subtitle">{{ page.subtitle }}</p>
   {% endif %}
-  <div>
+  <div{% if page.book_notes %} class="book-notes-content"{% endif %}>
     {{ content }}
   </div>
   <p>Posted on {{ page.date | date: "%B %d, %Y" }}</p>
