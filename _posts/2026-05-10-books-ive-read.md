@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Books I've Read"
-subtitle: "Short notes and ratings on books I've been reading."
+subtitle: "Notes on books I've been reading."
 date: 2026-05-10
 featured: true
 book_notes: true
@@ -9,12 +9,12 @@ book_notes: true
 
 These are short notes on books I've been reading. Ratings are for books I finished; unfinished books stay unrated.
 
-## May 26 | *Maintenance: Of Everything* by Stewart Brand (in progress)
+## May 26 | *Maintenance: Of Everything* by Stewart Brand 
 
 Currently reading. A bit of a punt but I'm enjoying it. On the surface it's about keeping sailing boats and motorbikes in good nick, but there's more to it - how we maintain ourselves, our relationships and our lives.
 
 
-## May 26 | *What is Intelligence?* by Blaise Agüera y Arcas (in progress)
+## May 26 | *What is Intelligence?* by Blaise Agüera y Arcas 
 
 Currently reading. First impression: dense with technical detail and quite provocative. I don't like some of the ideas being put forward (LLMs are conscious, for example). But I do look forward to reading Aguera y Arcas justify them.
 
@@ -51,7 +51,7 @@ Some memorable directions:
 - Let a piece sit for six weeks after the first draft, and do not touch it or look at it. It will feel like someone else's piece when you return, and it is easier to kill someone else's darlings than your own.
 
 
-## Apr 26 | *Life Ascending: The Ten Great Inventions of Evolution* by Nick Lane
+## Mar 26 | *Life Ascending: The Ten Great Inventions of Evolution* by Nick Lane
 
 Perhaps I was overly excitable after crashing through *A Brief History of Intelligence*, but *Life Ascending* isn't for me. It's mostly about the biochemistry of the origin of life, which although interesting, I didn't find very inspiring - I ended up dropping the book ~200 pages in.
 
