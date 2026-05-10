@@ -57,9 +57,21 @@
       width: calc(100% - 1rem);
       vertical-align: top;
     }
+    details.book-note summary .book-main {
+      column-gap: 0.75rem;
+      display: grid;
+      grid-template-areas:
+        "title status"
+        "author author";
+      grid-template-columns: minmax(0, 1fr) 5.75rem;
+      min-width: 0;
+      row-gap: 0.1rem;
+    }
     details.book-note summary cite {
       font-family: Georgia, "Times New Roman", serif;
       font-weight: 700;
+      grid-area: title;
+      min-width: 0;
     }
     details.book-note[open] { padding-bottom: 0.5rem; }
     .book-date {
@@ -72,8 +84,23 @@
       white-space: nowrap;
     }
     .book-notes-content li .book-date { margin-right: 0.45rem; }
+    .book-author {
+      grid-area: author;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      text-align: left;
+    }
+    .book-author:empty { display: none; }
     .book-rating,
-    .book-status { color: #666; white-space: nowrap; }
+    .book-status {
+      color: #666;
+      display: inline-block;
+      grid-area: status;
+      min-width: 5.75rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .book-status-empty { visibility: hidden; }
     .book-notes-content > h2 {
       line-height: 1.35;
       margin: 1rem 0 0.35rem;
@@ -91,8 +118,25 @@
       .blog-feature p { color: #9aa0a6; }
       details.book-note summary:hover { background: #1f242a; }
       .book-date,
+      .book-author,
       .book-rating,
       .book-status { color: #9aa0a6; }
+    }
+    @media (max-width: 640px) {
+      details.book-note summary .book-row {
+        grid-template-columns: 3.75rem minmax(0, 1fr);
+        column-gap: 0.55rem;
+      }
+      details.book-note summary .book-main {
+        grid-template-columns: minmax(0, 1fr) 5.5rem;
+      }
+      .book-author {
+        min-width: 0;
+      }
+      .book-rating,
+      .book-status {
+        min-width: 5.5rem;
+      }
     }
     /* Shared media blocks used in posts (videos/SVG illustrations). */
     figure.media-block,
@@ -301,25 +345,27 @@
         var date = document.createElement('span');
         var main = document.createElement('span');
         var title = document.createElement('cite');
+        var author = document.createElement('span');
+        var status = document.createElement('span');
 
         row.className = 'book-row';
         date.className = 'book-date';
         main.className = 'book-main';
+        author.className = 'book-author';
 
         date.textContent = book.date;
         title.textContent = book.title;
+        author.textContent = book.author || '';
         main.appendChild(title);
-
-        if (book.author) {
-          main.appendChild(document.createTextNode(', ' + book.author));
-        }
+        main.appendChild(author);
 
         if (book.status) {
-          var status = document.createElement('span');
           status.className = /^\d+\/\d+$/.test(book.status) ? 'book-rating' : 'book-status';
-          status.textContent = ' (' + book.status + ')';
-          main.appendChild(status);
+          status.textContent = '(' + book.status + ')';
+        } else {
+          status.className = 'book-status book-status-empty';
         }
+        main.appendChild(status);
 
         row.appendChild(date);
         row.appendChild(main);
