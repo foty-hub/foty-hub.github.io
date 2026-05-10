@@ -50,6 +50,11 @@
       user-select: none;
     }
     details.book-note summary:hover { background: #f7f7f7; }
+    details.book-note summary:hover,
+    details.book-note summary:hover .book-date,
+    details.book-note summary:hover .book-author,
+    details.book-note summary:hover .book-rating,
+    details.book-note summary:hover .book-status { color: #222; }
     details.book-note summary .book-row {
       display: inline-grid;
       grid-template-columns: 4rem minmax(0, 1fr);
@@ -85,6 +90,7 @@
     }
     .book-notes-content li .book-date { margin-right: 0.45rem; }
     .book-author {
+      color: #555;
       grid-area: author;
       min-width: 0;
       overflow-wrap: anywhere;
@@ -93,7 +99,7 @@
     .book-author:empty { display: none; }
     .book-rating,
     .book-status {
-      color: #666;
+      color: #555;
       display: inline-block;
       grid-area: status;
       min-width: 5.75rem;
@@ -117,10 +123,15 @@
       details.book-note { border-color: #444; }
       .blog-feature p { color: #9aa0a6; }
       details.book-note summary:hover { background: #1f242a; }
+      details.book-note summary:hover,
+      details.book-note summary:hover .book-date,
+      details.book-note summary:hover .book-author,
+      details.book-note summary:hover .book-rating,
+      details.book-note summary:hover .book-status { color: #f1f1f1; }
       .book-date,
-      .book-author,
       .book-rating,
       .book-status { color: #9aa0a6; }
+      .book-author { color: #b8b4ad; }
     }
     @media (max-width: 640px) {
       details.book-note summary .book-row {
@@ -361,7 +372,7 @@
 
         if (book.status) {
           status.className = /^\d+\/\d+$/.test(book.status) ? 'book-rating' : 'book-status';
-          status.textContent = '(' + book.status + ')';
+          status.textContent = book.status;
         } else {
           status.className = 'book-status book-status-empty';
         }
