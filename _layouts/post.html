@@ -29,3 +29,25 @@ layout: default
   </div>
   <p>Posted on {{ page.date | date: "%B %d, %Y" }}</p>
 </article>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    Array.prototype.slice.call(document.querySelectorAll('article a[href]')).forEach(function(link) {
+      var url;
+      try {
+        url = new URL(link.getAttribute('href'), window.location.href);
+      } catch (error) {
+        return;
+      }
+
+      if ((url.protocol === 'http:' || url.protocol === 'https:') && url.origin !== window.location.origin) {
+        link.target = '_blank';
+
+        var rel = (link.getAttribute('rel') || '').split(/\s+/).filter(Boolean);
+        ['noopener', 'noreferrer'].forEach(function(value) {
+          if (rel.indexOf(value) === -1) rel.push(value);
+        });
+        link.setAttribute('rel', rel.join(' '));
+      }
+    });
+  });
+</script>
