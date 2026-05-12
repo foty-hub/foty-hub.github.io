@@ -29,7 +29,6 @@
     .tabcontent { display: none; padding: 1rem 0; }
     main { max-width: {{ site.max_width | default: '820px' }};}
     article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-size: 1.1rem; line-height: 1.4; }
-    @media (prefers-color-scheme: dark) { article > .subtitle { color: #9aa0a6; } }
     /* Blog feature link and book notes post. */
     .blog-feature {
       margin: 0 0 2.5rem;
@@ -133,17 +132,26 @@
     }
     details.book-note summary + * { margin-top: 0; }
     .blog-posts { margin-top: 3rem; }
-    @media (prefers-color-scheme: dark) {
-      .blog-feature,
-      details.book-note { border-color: #444; }
-      .blog-feature p { color: #9aa0a6; }
-      details.book-note summary:hover { background: #1f242a; }
-      details.book-note summary:hover,
-      details.book-note summary:hover::before,
-      details.book-note summary:hover .book-date,
-      details.book-note summary:hover .book-author,
-      details.book-note summary:hover .book-rating,
-      details.book-note summary:hover .book-status { color: #f1f1f1; }
+    .blog-post-listing {
+      border-bottom: 1px solid #ddd;
+      padding: 1rem 0;
+    }
+    .blog-post-listing:first-of-type { padding-top: 0.25rem; }
+    .blog-post-listing h3 {
+      font-size: 1.25rem;
+      line-height: 1.3;
+      margin: 0 0 0.3rem;
+    }
+    .blog-post-summary {
+      color: #222;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .blog-post-date {
+      color: #666;
+      font-weight: 700;
+      margin-right: 0.45rem;
+      white-space: nowrap;
     }
     @media (max-width: 640px) {
       details.book-note summary .book-row {
@@ -194,11 +202,6 @@
     details.maths-warning[open] > summary {
       margin-bottom: 0.6rem;
     }
-    @media (prefers-color-scheme: dark) {
-      figure.media-block figcaption,
-      figure.video figcaption,
-      figure.illustration figcaption { color: #9aa0a6; }
-    }
     /* Research section layout */
     .research-list { display: grid; gap: 1.25rem; }
     .research-item { display: flex; align-items: flex-start; gap: 1rem; }
@@ -222,9 +225,6 @@
     .social-icons a { display: inline-flex; width: 22px; height: 22px; align-items: center; justify-content: center; text-decoration: none; }
     .social-icons img { width: 22px; height: 22px; display: block; filter: brightness(0) saturate(100%); opacity: 0.9; transition: opacity .15s ease-in-out; }
     .social-icons a:hover img { opacity: 1; }
-    @media (prefers-color-scheme: dark) {
-      .site-footer { border-top-color: #444; }
-    }
   </style>
   {{ content_for_header }}
   {% if page.math or site.math %}
