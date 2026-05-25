@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Predictive Brain"
+title: "Predictive Brain"
 subtitle: "The link between world models and the brain"
 math: true
 draft: true

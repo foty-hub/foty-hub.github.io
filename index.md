@@ -41,7 +41,7 @@ title: Home
       </div>
       <div class="research-content">
         <h3>WANDER: Evolve to Inspire, <em>Aug 2025</em></h3>
-        <p>An open-ended system for evolving interesting images to serve as a source of inspiration. The method uses novelty search over LLM prompts with diffusion models to evolve diverse sets of images (evaluated using CLIP distance). 
+        <p>An open-ended system for evolving interesting images to serve as a source of inspiration. The method uses novelty search over prompts to evolve diverse sets of images (evaluated using CLIP distance). 
         <br>
         <br>
         Accepted to the NeurIPS workshop GenProCC.</p>

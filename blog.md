@@ -6,8 +6,7 @@ title:
 <h1>{{ page.title }}</h1>
 
 <section class="blog-feature">
-  <h2><a href="{{ '/blog/books-ive-read' | relative_url }}">Books I've Read</a></h2>
-  <p>Short notes and ratings on books I've been reading.</p>
+  <h2><a href="{{ '/blog/books-ive-read' | relative_url }}">Reading List</a></h2>
 </section>
 
 <section class="blog-posts" id="posts">

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Books I've Read"
-subtitle: "Notes on books I've been reading."
+title: "Reading List"
+subtitle: ""
 date: 2026-05-10
 featured: true
 book_notes: true
