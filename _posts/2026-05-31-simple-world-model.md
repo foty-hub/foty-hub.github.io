@@ -1,29 +1,56 @@
 ---
 layout: post
 title: "World Model I"
-subtitle: "A basic world model plus MPC for control in JAX."
+subtitle: "How to build a basic world model plus MPC in JAX."
 math: true
-draft: true
+draft: false
 ---
 
-So, what actually is a world model? There are lots of competing definitions, especially as the term gets more and more hyped up. I'm going to take a Reinforcement Learning view - that means we're dealing with states $s$ and actions $a$. In that universe, a world model is fundamentally defined by this equation:
+<!--toc:start-->
+- [What Is a World Model?](#what-is-a-world-model)
+- [Learning to Model the World](#learning-to-model-the-world)
+  - [Network Definition](#network-definition)
+  - [The Training Loop](#the-training-loop)
+- [Using MPC to Derive a Policy](#using-mpc-to-derive-a-policy)
+  - [World Model: Rollout!](#world-model-rollout)
+  - [Generating Actions](#generating-actions)
+  - [Deriving Our Policy](#deriving-our-policy)
+- [How Does It Do?](#how-does-it-do)
+<!--toc:end-->
+
+
+
+# What Is a World Model?
+
+There are lots of competing definitions of world models, and frankly the term is becoming so diluted it's increasingly useless. _Fei-Fei Li_'s [world models](https://www.worldlabs.ai/blog/marble-world-model) focus on 3D visual reconstruction. _Yann LeCun_'s [JEPAs](https://arxiv.org/pdf/2506.09985) learn and predict underlying latent representations from video. Genie 3 is more action-oriented (check out my [write up here]({% post_url 2025-08-15-genie3 %})). Credible people like _Kevin Murphy_ reckon [LLMs constitute world models](https://xcancel.com/sirbayes/status/1974153818243018800). For their part, _Goldman Sachs_ [think that…](https://www.goldmansachs.com/insights/articles/when-ai-learns-how-the-world-works) wait _what?_ What bubble!?
+
+Anyway, for my world model I'm going to take a more traditional Reinforcement Learning view - that means we're talking about a state $s$, and an agent taking an action $a$. In that universe, a world model is fundamentally defined by predicting what the next state will be following a state-action pair:
 
 $$
 f_\theta(s, a) = s'.
 $$
 
-In this blog, we'll train a simple model $f_\theta$ and use MPC to transmute it into a decent policy. We can do something cool here; by training a world model only on random data, we'll be able to derive a working policy without our data collection ever being designed for a particular task. In some sense, that's what we do as humans. We think about what we want to get done, use our world knowledge, and squish them together to come up with a novel solution. We do that without needing to know the problem in advance, unlike typical RL solutions where the reward function is usually a core part of training.
+In this blog, we'll train a simple model $f_\theta$ and use MPC to transmute it into a policy. We can do something cool here; by training a world model only on random data, we'll derive a working policy without our data collection ever being designed for any particular task. In some sense, that's what we do as humans. We think about what we want to get done, use our world knowledge, and squish them together to come up with a novel solution. We do that without needing to know the problem in advance, unlike typical RL solutions where the reward function is usually a core part of training.
 
-# Collecting Data 
-I covered fast data collection using the GPU-friendly MJX in my last blogpost, so I won't go into the details here.
+# Learning to Model the World
 
-# Training a Model
-I'm going to define a very simple neural network, with a couple of layers and not too many parameters. It's probably overkill for Cartpole, but then most things are. I'm using the `nnx` library for my neural net here. It's built nicely to compose with the JAX transforms that we're using to speed up the simulation.
+## Network Definition
+I covered fast data collection using MJX in [my last post]({% post_url 2026-05-22-mjx %}), so I won't dwell on the details here. Our data collection will be random, looking something like this.
+
+<figure class="video">
+  <video width="640" height="480" controls loop>
+    <source src="/assets/videos/cartpole_random_policy.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <figcaption>Our data collection looks like this: task-agnostic random action selection.</figcaption>
+</figure>
+
+Now we have data, we can train a basic neural network with gradient descent. I'm using Google's `flax.nnx` library for my neural net because it composes well with the JAX transforms we're using elsewhere.
 
 ```python
 # define a simple network
 class LayerBlock(nnx.Module):
-    "Single linear layers using batchnorm for stable training."
+    "A single linear layer using batchnorm for stable training."
     def __init__(
         self,
         in_features: int,
@@ -41,8 +68,8 @@ class LayerBlock(nnx.Module):
         )
 
     def __call__(
-        self, x: Shaped[Array, "*Batch InFeatures"]
-    ) -> Shaped[Array, "*Batch OutFeatures"]:
+        self, x: Shaped[Array, "... InFeatures"]
+    ) -> Shaped[Array, "... OutFeatures"]:
         for layer in self.layers:
             x = layer(x)
         return x
@@ -79,7 +106,9 @@ class OneStepWorldModel(nnx.Module):
 ```
 
 
-# Training the Model
+## The Training Loop
+
+This is a fairly bog standard `nnx` training loop, which I've just included for those who are curious. The big difference vs PyTorch is the use of `nnx.value_and_grad` --- we tell JAX to give us the gradient over a specific function, rather than computing a loss and calling `loss.backward()`. For more on the differences and similarities, check out [this post](https://cloud.google.com/blog/products/ai-machine-learning/guide-to-jax-for-pytorch-developers).
 
 ```python
 model = OneStepWorldModel(nnx.Rngs(0))
@@ -115,24 +144,24 @@ for _ in range(n_train_steps):
     loss = train_step(model, optimizer, key)
 ```
 
-And we get a nice looking loss curve!
+And we get a nice looking loss curve. It looks like our network has learned to model _something_, but loss is pretty meaningless --- we care about results! To assess the usefulness of our world model, let's use it to control a cart.
 
 <figure class="illustration">
   <img src="/assets/images/one-step-trainloss.png" width="640" height="480" alt="Train Loss Curve">
-  <figcaption>Loss go down :)</figcaption>
+  <figcaption>Loss goes down :)</figcaption>
 </figure>
 
 # Using MPC to Derive a Policy
 
-We've learned a model, but now we want to actually use it to _do_ something. For that, we'll turn to model-predictive control, or MPC. I've written a more in-depth blogpost on MPC, but this case we'll follow a pretty simple procedure:
+To get a policy out of our model, we'll turn to model-predictive control, or MPC. I've written a [more in-depth blogpost on MPC]({% post_url 2026-05-12-mpc %}), but as a refresher, this is the procedure:
 
-1. Generate possible action sequences.
-2. Use our world model to figure out what states would arise if we took those actions.
-3. Use a reward function to score each trajectory.
+1. Generate possible sequences of actions.
+2. Use our world model to figure out which states would arise if we took those actions.
+3. Score each trajectory with a reward function.
 4. Choose the action which leads to the best trajectory.
-5. Repeat for each timestep.
+5. Repeat.
 
-## World Model: Rollout…
+## World Model: Rollout!
 Our model estimates the next state given a state-action pair
 
 $$
@@ -145,7 +174,7 @@ $$
 \tilde{s}_{t+2} = f_\theta(\tilde{s}_{t+1}, a_{t+1})
 $$
 
-…and so on, _unrolling_ our model to predict a full trajectory of states. In code, that looks like this (using `nnx.scan` instead of a Python for loop).
+…and so on and so forth, _unrolling_ our model to predict a trajectory of states. In code, that looks like this (using `nnx.scan` instead of a Python for loop).
 
 ```python
 @jax.jit
@@ -155,11 +184,11 @@ def rollout(
     initial_obs: Shaped[Array, "... StateDim"],
     actions: Shaped[Array, "... Time ActionDim"],
 ) -> Shaped[Array, "... Time StateDim"]:
-    # This assert will freak out if one our input arrays is the wrong shape
+    # This assert will freak out if one of our input arrays is the wrong shape
     chex.assert_equal_shape_prefix([initial_obs, actions], actions.ndim - 2)
 
     # Use of nnx.merge means we can use the functional API and rely on
-    # normal jax jit, which are slightly faster.
+    # normal JAX jit, which is slightly faster.
     model = nnx.merge(model_graphdef, model_state)
 
     # Usually faster to unroll along time on the first dimension, and
@@ -184,7 +213,7 @@ def rollout(
 
 ## Generating Actions
 
-Note that, to give our model something to unroll over, we also need to give it some actions. Cartpole is simple, so we don't need to get too fancy. For this, I'll generate random action sequences, and we'll then use the world model to evaluate them. This technique is called _random shooting_, and it's the simplest possible version of action sampling. Smarter alternatives like _CEM_ or _MPPI_ do more optimisation on their action sequences, but that's overkill for this. 
+Note that, to give our model something to unroll over, we also need to give it some actions. Cartpole is simple, so we don't need to get too fancy. We'll generate random action sequences and use the world model to evaluate them. This technique is called _random shooting_, and it's the simplest version of action sampling. Smarter alternatives like _CEM_ or _MPPI_ do more active optimisation on their action sequences which is relevant for higher dimensional spaces, but they're overkill for our needs.
 
 ```python
 def gaussian_action_samples(
@@ -198,17 +227,15 @@ def gaussian_action_samples(
     shape = (batch_size, n_samples, horizon, 1)  # 1 for action dim
     samples = mean + std * jax.random.normal(key, shape=shape)
     # cumulative sum over the horizon to accumulate a random walk
-    samples = jnp.cumsum(samples, axis=-1)
+    samples = jnp.cumsum(samples, axis=-2)
     return jnp.clip(samples, -1, 1) # Cartpole actions are bounded between [-1, 1]
 ```
 
-We'll also want to define a simple reward function so our policy knows what's good and what's bad. For Cartpole, a simple reward function just rewards you for keeping the pole vertical. We'll call the angle of the pole away from vertical $\phi$, giving us a simple reward function
+We'll also want to define a reward function so our policy knows what's good and what's bad. For Cartpole, we're usually trying to keep the pole vertical. We'll call the angle of the pole $s_\phi$, giving us a simple reward function
 
 $$
 r(s) = \frac{1 + \cos(s_\phi)}{2}, \quad r \in [0, 1].
 $$
-
-In code…
 
 ```python
 def upright_reward_fn(
@@ -221,29 +248,30 @@ def upright_reward_fn(
 
 ## Deriving Our Policy
 
-Now we have all the pieces for our policy. We just need to generate a random set of actions $a=(a_1, \dots, a_H)$, score the resultant states $(s_1, \dots, s_H)$, and then pick the best action:
+Now we have all the pieces for our policy. We just need to generate a random set of actions $a=(a_1, \dots, a_H)$, score the resultant states $(s_2, \dots, s_{H+1})$, and then pick the best action:
 
 $$
-(a_1, \dots, a_H)^* = \operatorname*{argmax}_{(a_1, \dots, a_H)} \sum_{\tau=t}^{t+H} r( f_\theta(\tilde{s})\tau, a_\tau ) )
+(a_1, \dots, a_H)^* = \operatorname*{argmax}_{(a_1, \dots, a_H)} \sum_{t=1}^{H} r(f_\theta(\tilde{s}_t, a_t)),
+\quad \tilde{s}_1 = s_1
 $$
 
-And then we simply select next action $a_1^*$. If code is your bag, that looks like this.
+And then we simply select next action $a_1^*$. In code:
 
 ```python
-@jax.jit
+@jax.jit(static_argnames="reward_fn")
 def simulate_policy(key, model, reward_fn: Callable = upright_reward_fn):
     horizon = 5
     n_samples = 1024
     n_steps = 1000
 
-    # merge the nnx model
+    # reconstruct nnx model
     graphdef, model_state = nnx.split(model)
-    model.eval() # don't need to track batchnorm stats anymore
+    model.eval()
 
     # Get initial state
     state = env.reset(key)
 
-    def policy_step(state, xs=None):
+    def policy_step(state, key):
         initial_obs = state.obs
         initial_obs = repeat(initial_obs, "... S -> ... N S", N=n_samples)
 
@@ -262,6 +290,43 @@ def simulate_policy(key, model, reward_fn: Callable = upright_reward_fn):
         state = env.step(state, next_action)
         return state, {"state": state, "action": next_action}
 
-    _, states = jax.lax.scan(policy_step, state, length=n_steps)
+    keys = jax.random.split(key, n_steps)
+    _, states = jax.lax.scan(policy_step, state, xs=keys)
     return states
 ```
+
+# How Does It Do?
+
+OK so, we've put in all this effort --- does it actually work?? Let's review an instant replay:
+
+<figure class="video">
+  <video width="640" height="480" controls loop>
+    <source src="/assets/videos/wm_onestep_upright.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <figcaption>Our world model-derived policy in action on Cartpole.</figcaption>
+</figure>
+
+I'd say that's pretty good. We've asked our policy to keep the pole upright, and it does as requested, although it's a bit wobbly off the rip. There are a number of simple improvements we could consider:
+
+- Our data was driven by a random policy, so most of it is dissimilar to the states the policy encounters: a controlled, upright position. We can run more episodes with the model-derived policy and train a model with a blend of old and new data. That newer model will be more familiar with the kinds of state the policy ends up in, so it can make better predictions.
+- We're training our model on a simple one-step prediction error, but we actually want to unroll it over a whole horizon. Instead of training on single $(s, a, s')$ transitions, we could train our model on longer prediction horizons --- that's what we ultimately care about.
+- Our action sampling strategy is pretty bad. Cartpole only has a 1-dimensional action space, so we can get good coverage of the space with a brute-force approach like random shooting. But on real problems our action space is far larger. There's a subtler issue too: with random shooting, our first action doesn't really have anything to do with the rest of its sequence. Maybe the best trajectory happens to pick a rubbish first action, then loads of great ones afterwards --- but then we only take the first action and discard the rest. Whoops. That's where smarter approaches which actively optimise an action trajectory become a lot more attractive.
+
+Those are all sensible tweaks, but I think there's a more interesting challenge. Let's test our model with a harder task: can it transfer to a reward function which demands that the pole stays down?
+
+<figure class="video">
+  <video width="640" height="480" controls loop>
+    <source src="/assets/videos/wm_onestep_downwards.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <figcaption>With a harder, longer-horizon challenge, like keeping the pole straight down, our policy falls apart.</figcaption>
+</figure>
+
+Err. No. It can't transfer at all.
+
+What's going wrong? Well, our policy is completely _myopic_. Our sim is operating at 100Hz, and we're predicting over a 5 step horizon, so we're only planning 0.05s ahead. That short horizon is OK for keeping upright: we start close to the optimal position, and the agent just needs to oppose movement in the bad direction. But for the downwards task, it's too short-sighted. If our agent had a brain, it would be all fast-twitch nerves and no grey matter.
+
+To address this failing, I think we need to get _hierarchical_. That means we move beyond one single model, to layered models which operate on different levels of temporal abstraction. That could be a small one which can operate at 100Hz to do the low-level stuff, as well as a big, slow one that thinks ahead. The big one tells the small one what to do, and together they should be able to transfer. That's my theory at least, and it's what I'm going to work on for the next post in this series. I'd also like to try MPC on some harder environments --- Cartpole is fine for a proof of concept but I think we can do better.
+
+Thanks for reading. I hope you found this useful, interesting, or at least somewhat risible.
