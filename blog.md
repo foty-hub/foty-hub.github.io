@@ -6,11 +6,11 @@ title:
 <h1>{{ page.title }}</h1>
 
 <section class="blog-feature">
-  <h2><a href="{{ '/blog/books-ive-read' | relative_url }}">Reading List</a></h2>
+  <h1><a href="{{ '/blog/books-ive-read' | relative_url }}">Reading List</a></h1>
 </section>
 
 <section class="blog-posts" id="posts">
-  <h2>Posts</h2>
+  <h1>Posts</h1>
 
 {% assign visible_posts = site.posts | where_exp: "post", "post.draft != true" %}
 {% assign listed_posts = visible_posts | where_exp: "post", "post.featured != true" %}
