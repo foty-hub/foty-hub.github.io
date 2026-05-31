@@ -21,6 +21,27 @@ math: true
       </select>
     </label>
     <label>
+      Body size
+      <select name="body-size">
+        <option value="100">100%</option>
+        <option value="102">102%</option>
+        <option value="104">104%</option>
+        <option value="106">106%</option>
+        <option value="108">108%</option>
+        <option value="110">110%</option>
+      </select>
+    </label>
+    <label>
+      Body weight
+      <select name="body-weight">
+        <option value="400">400</option>
+        <option value="425">425</option>
+        <option value="450">450</option>
+        <option value="475">475</option>
+        <option value="500">500</option>
+      </select>
+    </label>
+    <label>
       Heading
       <select name="heading">
         <option value="avenir">Avenir LT Pro</option>

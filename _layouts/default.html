@@ -22,25 +22,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400;0,700;1,400;1,700&amp;family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Petrona:ital,wght@0,400;0,700;1,400;1,700&amp;family=Sorts+Mill+Goudy:ital@0;1&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400;0,700;1,400;1,700&amp;family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Petrona:ital,wght@0,400..700;1,400..700&amp;family=Sorts+Mill+Goudy:ital@0;1&amp;display=swap">
   <script>
     (function() {
       var choices = {
         body: ["petrona", "lora", "libre-caslon", "sorts-mill-goudy", "baskervville", "eb-garamond"],
         heading: ["avenir", "futura"],
-        math: ["katex-default", "euler", "concrete", "gfs-neohellenic", "stix-two", "newpx"]
+        math: ["katex-default", "euler", "concrete", "gfs-neohellenic", "stix-two", "newpx"],
+        bodyWeight: ["400", "425", "450", "475", "500"],
+        bodySize: ["100", "102", "104", "106", "108", "110"]
       };
       var defaults = {
-        body: "petrona",
+        body: "lora",
         heading: "futura",
-        math: "concrete"
+        math: "concrete",
+        bodyWeight: "400",
+        bodySize: "100"
       };
       var params = new URLSearchParams(window.location.search);
 
       Object.keys(choices).forEach(function(name) {
-        var value = params.get(name) || defaults[name];
+        var paramName = name.replace(/[A-Z]/g, function(letter) { return "-" + letter.toLowerCase(); });
+        var value = params.get(paramName) || defaults[name];
         if (choices[name].indexOf(value) === -1) value = defaults[name];
-        document.documentElement.setAttribute("data-" + name + "-font", value);
+        document.documentElement.setAttribute("data-" + paramName + (name === "bodyWeight" || name === "bodySize" ? "" : "-font"), value);
       });
     })();
   </script>
@@ -327,11 +332,14 @@
     }
 
     :root {
-      --font-body: "Petrona", Georgia, "Times New Roman", serif;
+      --font-body: "Lora", Georgia, "Times New Roman", serif;
       --font-heading: "Futura LT Pro", Arial, sans-serif;
       --font-display: "DRAFT PAPER", "Futura LT Pro", Arial, sans-serif;
       --font-mono: "MonoLisa", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       --font-math: "Concrete Math";
+      --font-body-weight: 400;
+      --font-body-size: 1rem;
+      --font-body-line-height: 1.6rem;
     }
     html[data-body-font="petrona"] { --font-body: "Petrona", Georgia, "Times New Roman", serif; }
     html[data-body-font="lora"] { --font-body: "Lora", Georgia, "Times New Roman", serif; }
@@ -346,8 +354,23 @@
     html[data-math-font="gfs-neohellenic"] { --font-math: "GFS Neohellenic Math"; }
     html[data-math-font="stix-two"] { --font-math: "STIX Two Math Local"; }
     html[data-math-font="newpx"] { --font-math: "NewPX Preview"; }
+    html[data-body-weight="400"] { --font-body-weight: 400; }
+    html[data-body-weight="425"] { --font-body-weight: 425; }
+    html[data-body-weight="450"] { --font-body-weight: 450; }
+    html[data-body-weight="475"] { --font-body-weight: 475; }
+    html[data-body-weight="500"] { --font-body-weight: 500; }
+    html[data-body-size="100"] { --font-body-size: 1rem; }
+    html[data-body-size="102"] { --font-body-size: 1.02rem; }
+    html[data-body-size="104"] { --font-body-size: 1.04rem; }
+    html[data-body-size="106"] { --font-body-size: 1.06rem; }
+    html[data-body-size="108"] { --font-body-size: 1.08rem; }
+    html[data-body-size="110"] { --font-body-size: 1.1rem; }
 
-    body { font-family: var(--font-body); margin: 2rem; }
+    body {
+      font-family: var(--font-body);
+      font-weight: var(--font-body-weight);
+      margin: 2rem;
+    }
     h1 {
       font-family: var(--font-display);
       font-weight: 400;
@@ -360,15 +383,14 @@
       font-family: var(--font-heading);
       font-weight: 700;
     }
-    /* Balanced prose rhythm with better inline-math behavior. */
-    article,
-    article p,
-    article li {
-      line-height: 1.6;
+    main p,
+    main li {
+      font-size: var(--font-body-size);
+      line-height: var(--font-body-line-height);
     }
-    article ul,
-    article ol {
-      line-height: 1.6;
+    main ul,
+    main ol {
+      line-height: var(--font-body-line-height);
     }
     header { margin-bottom: 2rem; }
     .tab { overflow: hidden; border-bottom: 1px solid #ccc; }
@@ -377,7 +399,11 @@
     .tablinks.active { background-color: #ccc; }
     .tabcontent { display: none; padding: 1rem 0; }
     main { max-width: {{ site.max_width | default: '820px' }};}
-    article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-family: var(--font-body); font-size: 1.1rem; line-height: 1.4; }
+    article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-family: var(--font-body); font-size: calc(var(--font-body-size) * 1.1); line-height: 1.4; }
+    strong,
+    b {
+      font-weight: 700;
+    }
     /* Code blocks generated by Jekyll/Rouge. */
     article :not(pre) > code {
       padding: 0.08rem 0.24rem;
@@ -390,24 +416,30 @@
     }
     article div.highlighter-rouge {
       margin: 1.25rem 0;
+      max-width: 100%;
     }
     article div.highlighter-rouge .highlight {
+      box-sizing: border-box;
       margin: 0;
-      overflow: hidden;
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
       border: 1px solid #ddd;
       border-radius: 6px;
       background: #fafafa;
+      -webkit-overflow-scrolling: touch;
     }
     article pre.highlight {
+      box-sizing: border-box;
       margin: 0;
       padding: 0.85rem 1rem;
-      overflow-x: auto;
+      min-width: max-content;
+      overflow: visible;
       background: transparent;
       color: #222;
       font-family: var(--font-mono);
       font-size: 0.92rem;
       line-height: 1.5;
-      -webkit-overflow-scrolling: touch;
     }
     article pre.highlight code {
       padding: 0;
@@ -585,7 +617,7 @@
       border-bottom: 1px solid #ddd;
       display: grid;
       gap: 0.75rem;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       margin: 0 0 2rem;
       padding-bottom: 1rem;
     }
@@ -822,10 +854,10 @@
       var fontLabControls = document.querySelector('.font-lab-controls');
       if (fontLabControls) {
         var fontParams = new URLSearchParams(window.location.search);
-        var fields = ['body', 'heading', 'math'];
+        var fields = ['body', 'body-size', 'body-weight', 'heading', 'math'];
         fields.forEach(function(field) {
           var select = fontLabControls.querySelector('[name="' + field + '"]');
-          var value = document.documentElement.getAttribute('data-' + field + '-font');
+          var value = document.documentElement.getAttribute('data-' + field + (field === 'body-weight' || field === 'body-size' ? '' : '-font'));
           if (!select || !value) return;
 
           select.value = value;
@@ -838,7 +870,7 @@
         var current = document.getElementById('font-lab-current');
         if (current) {
           current.textContent = fields.map(function(field) {
-            return field + '=' + document.documentElement.getAttribute('data-' + field + '-font');
+            return field + '=' + document.documentElement.getAttribute('data-' + field + (field === 'body-weight' || field === 'body-size' ? '' : '-font'));
           }).join(' / ');
         }
       }
