@@ -30,7 +30,7 @@ $$
 f_\theta(s, a) = s'.
 $$
 
-In this blog, we'll train a simple model $f_\theta$ and use MPC to transmute it into a policy. We can do something cool here; by training a world model only on random data, we'll derive a working policy without our data collection ever being designed for any particular task. In some sense, that's what we do as humans. We think about what we want to get done, use our world knowledge, and squish them together to come up with a novel solution. We do that without needing to know the problem in advance, unlike typical RL solutions where the reward function is usually a core part of training.
+In this blog, we'll train a simple model $f_\theta$ and use MPC to transmute it into a policy. We can do something cool here; by training a world model only on random data, we'll derive a working policy without our data collection ever being designed for any particular task. In some sense, that's what we do as humans. We think about what we want to get done, use our world knowledge, and squish them together to come up with a novel solution. We do that without needing to know the problem in advance, unlike typical RL solutions where the reward function is usually a core part of training. As per usual, the code is available at [this notebook](https://colab.research.google.com/drive/1fYPO-F4tHEkr_MFS6Jmt4WFE0oAm31TO?usp=sharing) if you'd like to run it yourself.
 
 # Learning to Model the World
 
@@ -42,10 +42,10 @@ I covered fast data collection using MJX in [my last post]({% post_url 2026-05-2
     <source src="/assets/videos/cartpole_random_policy.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-  <figcaption>Our data collection looks like this: task-agnostic random action selection.</figcaption>
+  <figcaption>Our data collection looks like this: task-agnostic random action selection. The agent controls the horizontal speed of the cart, either left or right.</figcaption>
 </figure>
 
-Now we have data, we can train a basic neural network with gradient descent. I'm using Google's `flax.nnx` library for my neural net because it composes well with the JAX transforms we're using elsewhere.
+With data collected, we can train a basic neural network via gradient descent. I'm using Google's `flax.nnx` library for this because it works well with the JAX transforms we're using elsewhere.
 
 ```python
 # define a simple network
@@ -108,7 +108,7 @@ class OneStepWorldModel(nnx.Module):
 
 ## The Training Loop
 
-This is a fairly bog standard `nnx` training loop, which I've just included for those who are curious. The big difference vs PyTorch is the use of `nnx.value_and_grad` --- we tell JAX to give us the gradient over a specific function, rather than computing a loss and calling `loss.backward()`. For more on the differences and similarities, check out [this post](https://cloud.google.com/blog/products/ai-machine-learning/guide-to-jax-for-pytorch-developers).
+This is a fairly bog-standard `nnx` training loop, which I've just included for those who are curious. The big difference vs PyTorch is the use of `nnx.value_and_grad` --- we tell JAX to give us the gradient over a specific function, rather than computing a loss and calling `loss.backward()`. For more on the differences and similarities, check out [this post](https://cloud.google.com/blog/products/ai-machine-learning/guide-to-jax-for-pytorch-developers).
 
 ```python
 model = OneStepWorldModel(nnx.Rngs(0))
