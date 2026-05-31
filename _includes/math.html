@@ -5,6 +5,17 @@
   .katex-display > .katex { font-size: 1.21em; line-height: 1.2; }
   .katex .base { vertical-align: baseline; }
   p .katex-display { margin: 0.9em 0; }
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathnormal,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathrm,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathit,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathbf,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mainrm,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .text {
+    font-family: var(--font-math), KaTeX_Main, "Times New Roman", serif !important;
+  }
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .gfs-neohellenic-alpha {
+    font-family: "GFS Neohellenic Math", var(--font-math), KaTeX_Main, "Times New Roman", serif !important;
+  }
 </style>
 
 <!-- KaTeX core and auto-render -->
@@ -13,7 +24,59 @@
 
 <!-- Initialize KaTeX auto-render on page load -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  function applyGfsNeohellenicAlphabets(root) {
+    var alphabetMaps = {
+      mathcal: {
+        A: '\u{1D49C}', B: '\u{212C}', C: '\u{1D49E}', D: '\u{1D49F}', E: '\u{2130}', F: '\u{2131}',
+        G: '\u{1D4A2}', H: '\u{210B}', I: '\u{2110}', J: '\u{1D4A5}', K: '\u{1D4A6}', L: '\u{2112}',
+        M: '\u{2133}', N: '\u{1D4A9}', O: '\u{1D4AA}', P: '\u{1D4AB}', Q: '\u{1D4AC}', R: '\u{211B}',
+        S: '\u{1D4AE}', T: '\u{1D4AF}', U: '\u{1D4B0}', V: '\u{1D4B1}', W: '\u{1D4B2}', X: '\u{1D4B3}',
+        Y: '\u{1D4B4}', Z: '\u{1D4B5}'
+      },
+      mathbb: {
+        A: '\u{1D538}', B: '\u{1D539}', C: '\u{2102}', D: '\u{1D53B}', E: '\u{1D53C}', F: '\u{1D53D}',
+        G: '\u{1D53E}', H: '\u{210D}', I: '\u{1D540}', J: '\u{1D541}', K: '\u{1D542}', L: '\u{1D543}',
+        M: '\u{1D544}', N: '\u{2115}', O: '\u{1D546}', P: '\u{2119}', Q: '\u{211A}', R: '\u{211D}',
+        S: '\u{1D54A}', T: '\u{1D54B}', U: '\u{1D54C}', V: '\u{1D54D}', W: '\u{1D54E}', X: '\u{1D54F}',
+        Y: '\u{1D550}', Z: '\u{2124}'
+      },
+      mathfrak: {
+        A: '\u{1D504}', B: '\u{1D505}', C: '\u{212D}', D: '\u{1D507}', E: '\u{1D508}', F: '\u{1D509}',
+        G: '\u{1D50A}', H: '\u{210C}', I: '\u{2111}', J: '\u{1D50D}', K: '\u{1D50E}', L: '\u{1D50F}',
+        M: '\u{1D510}', N: '\u{1D511}', O: '\u{1D512}', P: '\u{1D513}', Q: '\u{1D514}', R: '\u{211C}',
+        S: '\u{1D516}', T: '\u{1D517}', U: '\u{1D518}', V: '\u{1D519}', W: '\u{1D51A}', X: '\u{1D51B}',
+        Y: '\u{1D51C}', Z: '\u{2128}'
+      }
+    };
+    alphabetMaps.mathscr = alphabetMaps.mathcal;
+
+    Array.prototype.slice.call(root.querySelectorAll('.katex-html .mathcal, .katex-html .mathscr, .katex-html .mathbb, .katex-html .mathfrak')).forEach(function(node) {
+      if (node.getAttribute('data-gfs-neohellenic-alpha') === 'true') return;
+
+      var mapName = ['mathcal', 'mathscr', 'mathbb', 'mathfrak'].find(function(name) {
+        return node.classList.contains(name);
+      });
+      var map = alphabetMaps[mapName];
+      var changed = false;
+
+      Array.prototype.slice.call(node.childNodes).forEach(function(child) {
+        if (child.nodeType !== Node.TEXT_NODE) return;
+        var nextValue = child.nodeValue.replace(/[A-Z]/g, function(value) {
+          if (!map[value]) return value;
+          changed = true;
+          return map[value];
+        });
+        child.nodeValue = nextValue;
+      });
+
+      if (changed) {
+        node.classList.add('gfs-neohellenic-alpha');
+        node.setAttribute('data-gfs-neohellenic-alpha', 'true');
+      }
+    });
+  }
+
+  function renderSiteMath() {
     if (typeof renderMathInElement !== 'function') return;
     renderMathInElement(document.body, {
       delimiters: [
@@ -25,17 +88,18 @@
       ignoredTags: ['script', 'noscript', 'style', 'textarea', 'code', 'pre'],
       throwOnError: false
     });
+    applyGfsNeohellenicAlphabets(document.body);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    renderSiteMath();
   });
   // Optional: re-render on Turbolinks-like navigation if used in future
   document.addEventListener('turbolinks:load', function(){
-    if (typeof renderMathInElement === 'function') {
-      renderMathInElement(document.body);
-    }
+    renderSiteMath();
   });
   document.addEventListener('pjax:complete', function(){
-    if (typeof renderMathInElement === 'function') {
-      renderMathInElement(document.body);
-    }
+    renderSiteMath();
   });
   
 </script>

@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} - {{ site.title }}</title>
+  {% assign page_title = page.title | default: "" | strip %}
+  {% assign site_title = site.title | default: "" | strip %}
+  {% assign fallback_title = site.description | default: "Alex Inch" | strip %}
+  {% if page_title != "" and site_title != "" %}
+  <title>{{ page_title }} - {{ site_title }}</title>
+  {% elsif page_title != "" %}
+  <title>{{ page_title }}</title>
+  {% elsif site_title != "" %}
+  <title>{{ site_title }}</title>
+  {% else %}
+  <title>{{ fallback_title }}</title>
+  {% endif %}
   <link rel="icon" href="{{ '/favicon/favicon.ico' | relative_url }}" sizes="any">
   <link rel="icon" href="{{ '/favicon/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ '/favicon/apple-touch-icon.png' | relative_url }}">
@@ -11,7 +22,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400;1,7..72,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;1,6..72,400;1,6..72,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400;1,8..60,700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400;0,700;1,400;1,700&amp;family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;family=Petrona:ital,wght@0,400;0,700;1,400;1,700&amp;family=Sorts+Mill+Goudy:ital@0;1&amp;display=swap">
+  <script>
+    (function() {
+      var choices = {
+        body: ["petrona", "lora", "libre-caslon", "sorts-mill-goudy", "baskervville", "eb-garamond"],
+        heading: ["avenir", "futura"],
+        math: ["katex-default", "euler", "concrete", "gfs-neohellenic", "stix-two", "newpx"]
+      };
+      var defaults = {
+        body: "petrona",
+        heading: "futura",
+        math: "concrete"
+      };
+      var params = new URLSearchParams(window.location.search);
+
+      Object.keys(choices).forEach(function(name) {
+        var value = params.get(name) || defaults[name];
+        if (choices[name].indexOf(value) === -1) value = defaults[name];
+        document.documentElement.setAttribute("data-" + name + "-font", value);
+      });
+    })();
+  </script>
   <style>
     @font-face {
       font-family: "MonoLisa";
@@ -55,17 +87,278 @@
       font-style: normal;
       font-display: swap;
     }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-ExtraLight.woff2' | relative_url }}") format("woff2");
+      font-weight: 200;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-ExtraLightOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 200;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-Light.woff2' | relative_url }}") format("woff2");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-LightOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-Regular.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-Oblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-Medium.woff2' | relative_url }}") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-MediumOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 500;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-Bold.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-BoldOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-ExtraBold.woff2' | relative_url }}") format("woff2");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Avenir LT Pro";
+      src: url("{{ '/assets/fonts/text/avenir-lt-pro/AvenirLTPro-ExtraBoldOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 800;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-Light.woff2' | relative_url }}") format("woff2");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-LightOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-Book.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-BookOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-Medium.woff2' | relative_url }}") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-MediumOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 500;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-SemiBold.woff2' | relative_url }}") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-SemiBoldOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 600;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-Bold.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-BoldOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-XBold.woff2' | relative_url }}") format("woff2");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-XBoldOblique.woff2' | relative_url }}") format("woff2");
+      font-weight: 800;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Futura LT Pro";
+      src: url("{{ '/assets/fonts/text/futura-lt-pro/FuturaLTPro-Black.woff2' | relative_url }}") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Euler Math";
+      src: url("{{ '/assets/fonts/math/euler/Euler-Math.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Concrete Math";
+      src: url("{{ '/assets/fonts/math/concrete/Concrete-Math.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Concrete Math";
+      src: url("{{ '/assets/fonts/math/concrete/Concrete-Math-Bold.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "GFS Neohellenic Math";
+      src: url("{{ '/assets/fonts/math/gfs-neohellenic/GFSNeohellenicMath.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "STIX Two Math Local";
+      src: url("{{ '/assets/fonts/math/stix-two/STIXTwoMath-Regular.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "NewPX Preview";
+      src: url("{{ '/assets/fonts/math/newpx/TeXGyrePagellaX-Regular.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "NewPX Preview";
+      src: url("{{ '/assets/fonts/math/newpx/TeXGyrePagellaX-Italic.woff2' | relative_url }}") format("woff2");
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "NewPX Preview";
+      src: url("{{ '/assets/fonts/math/newpx/TeXGyrePagellaX-Bold.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "NewPX Preview";
+      src: url("{{ '/assets/fonts/math/newpx/TeXGyrePagellaX-BoldItalic.woff2' | relative_url }}") format("woff2");
+      font-weight: 700;
+      font-style: italic;
+      font-display: swap;
+    }
 
-    body { font-family: "IBM Plex Sans", Arial, sans-serif; margin: 2rem; }
+    :root {
+      --font-body: "Petrona", Georgia, "Times New Roman", serif;
+      --font-heading: "Futura LT Pro", Arial, sans-serif;
+      --font-display: "DRAFT PAPER", "Futura LT Pro", Arial, sans-serif;
+      --font-mono: "MonoLisa", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --font-math: "Concrete Math";
+    }
+    html[data-body-font="petrona"] { --font-body: "Petrona", Georgia, "Times New Roman", serif; }
+    html[data-body-font="lora"] { --font-body: "Lora", Georgia, "Times New Roman", serif; }
+    html[data-body-font="libre-caslon"] { --font-body: "Libre Caslon Text", Georgia, "Times New Roman", serif; }
+    html[data-body-font="sorts-mill-goudy"] { --font-body: "Sorts Mill Goudy", Georgia, "Times New Roman", serif; }
+    html[data-body-font="baskervville"] { --font-body: "Baskervville", Georgia, "Times New Roman", serif; }
+    html[data-body-font="eb-garamond"] { --font-body: "EB Garamond", Georgia, "Times New Roman", serif; }
+    html[data-heading-font="avenir"] { --font-heading: "Avenir LT Pro", Arial, sans-serif; }
+    html[data-heading-font="futura"] { --font-heading: "Futura LT Pro", Arial, sans-serif; }
+    html[data-math-font="euler"] { --font-math: "Euler Math"; }
+    html[data-math-font="concrete"] { --font-math: "Concrete Math"; }
+    html[data-math-font="gfs-neohellenic"] { --font-math: "GFS Neohellenic Math"; }
+    html[data-math-font="stix-two"] { --font-math: "STIX Two Math Local"; }
+    html[data-math-font="newpx"] { --font-math: "NewPX Preview"; }
+
+    body { font-family: var(--font-body); margin: 2rem; }
     h1 {
-      font-family: "DRAFT PAPER", Georgia, "Times New Roman", serif;
+      font-family: var(--font-display);
+      font-weight: 400;
     }
     h2,
     h3,
     h4,
     h5,
     h6 {
-      font-family: "Literata", Georgia, "Times New Roman", serif;
+      font-family: var(--font-heading);
+      font-weight: 700;
     }
     /* Balanced prose rhythm with better inline-math behavior. */
     article,
@@ -79,12 +372,12 @@
     }
     header { margin-bottom: 2rem; }
     .tab { overflow: hidden; border-bottom: 1px solid #ccc; }
-    .tablinks { background-color: inherit; border: none; outline: none; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; display: inline-block; text-decoration: none; color: inherit; font-family: "DRAFT PAPER", "IBM Plex Sans", Arial, sans-serif; }
+    .tablinks { background-color: inherit; border: none; outline: none; cursor: pointer; padding: 0.5rem 1rem; transition: 0.3s; display: inline-block; text-decoration: none; color: inherit; font-family: var(--font-display); }
     .tablinks:hover { background-color: #ddd; }
     .tablinks.active { background-color: #ccc; }
     .tabcontent { display: none; padding: 1rem 0; }
     main { max-width: {{ site.max_width | default: '820px' }};}
-    article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-family: "Literata", Georgia, "Times New Roman", serif; font-size: 1.1rem; line-height: 1.4; }
+    article > .subtitle { margin-top: -0.5rem; margin-bottom: 1rem; color: #666; font-family: var(--font-body); font-size: 1.1rem; line-height: 1.4; }
     /* Code blocks generated by Jekyll/Rouge. */
     article :not(pre) > code {
       padding: 0.08rem 0.24rem;
@@ -92,7 +385,7 @@
       border-radius: 4px;
       background: #f7f7f7;
       color: #222;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: var(--font-mono);
       font-size: 0.92em;
     }
     article div.highlighter-rouge {
@@ -111,7 +404,7 @@
       overflow-x: auto;
       background: transparent;
       color: #222;
-      font-family: "MonoLisa", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: var(--font-mono);
       font-size: 0.92rem;
       line-height: 1.5;
       -webkit-overflow-scrolling: touch;
@@ -219,7 +512,7 @@
       row-gap: 0.1rem;
     }
     details.book-note summary cite {
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: var(--font-body);
       font-weight: 700;
       grid-area: title;
       min-width: 0;
@@ -228,7 +521,7 @@
     .book-date {
       color: #666;
       display: inline-block;
-      font-family: "DRAFT PAPER", Georgia, "Times New Roman", serif;
+      font-family: var(--font-display);
       font-size: 0.9rem;
       font-variant-numeric: tabular-nums;
       font-weight: 400;
@@ -270,6 +563,8 @@
     }
     .blog-post-listing:first-of-type { padding-top: 0.25rem; }
     .blog-post-listing h3 {
+      font-family: var(--font-display);
+      font-weight: 400;
       font-size: 1.25rem;
       line-height: 1.3;
       margin: 0 0 0.3rem;
@@ -285,6 +580,82 @@
       margin-right: 0.45rem;
       white-space: nowrap;
     }
+    .font-lab-controls {
+      align-items: end;
+      border-bottom: 1px solid #ddd;
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 0 0 2rem;
+      padding-bottom: 1rem;
+    }
+    .font-lab-controls label {
+      color: #555;
+      display: grid;
+      font-family: var(--font-heading);
+      font-size: 0.86rem;
+      gap: 0.3rem;
+      line-height: 1.2;
+    }
+    .font-lab-controls select {
+      background: #fff;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      color: #222;
+      font: inherit;
+      padding: 0.45rem 0.5rem;
+      width: 100%;
+    }
+    .font-lab-current {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: -1rem 0 2rem;
+    }
+    .font-lab-section {
+      border-top: 1px solid #ddd;
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+    .font-lab-section:first-of-type {
+      border-top: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
+    .font-lab-display-sample,
+    .font-lab-chart-label {
+      font-family: var(--font-display);
+      font-weight: 400;
+    }
+    .font-lab-display-sample {
+      font-size: 1.4rem;
+      line-height: 1.2;
+      margin: 0.5rem 0 1rem;
+    }
+    .font-lab-chart {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: 5rem minmax(0, 1fr);
+      max-width: 420px;
+      padding: 0.75rem;
+    }
+    .font-lab-chart-label {
+      color: #555;
+      font-size: 0.8rem;
+      letter-spacing: 0;
+      text-align: right;
+    }
+    .font-lab-chart-bar {
+      background: #222;
+      border-radius: 2px;
+      height: 0.75rem;
+      margin-top: 0.12rem;
+    }
+    .font-lab-sans-sample {
+      font-family: var(--font-heading);
+    }
     @media (max-width: 640px) {
       details.book-note summary .book-row {
         grid-template-columns: 3.75rem minmax(0, 1fr);
@@ -299,6 +670,9 @@
       .book-rating,
       .book-status {
         min-width: 5.5rem;
+      }
+      .font-lab-controls {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
     /* Shared media blocks used in posts (videos/SVG illustrations). */
@@ -442,6 +816,30 @@
           setActiveLink(function(l){ return (l.getAttribute('href') || '').indexOf('/blog') !== -1; });
         } else {
           setActiveLink(function(l){ return (l.getAttribute('href') || '').replace(location.origin, '') === '/'; });
+        }
+      }
+
+      var fontLabControls = document.querySelector('.font-lab-controls');
+      if (fontLabControls) {
+        var fontParams = new URLSearchParams(window.location.search);
+        var fields = ['body', 'heading', 'math'];
+        fields.forEach(function(field) {
+          var select = fontLabControls.querySelector('[name="' + field + '"]');
+          var value = document.documentElement.getAttribute('data-' + field + '-font');
+          if (!select || !value) return;
+
+          select.value = value;
+          select.addEventListener('change', function() {
+            fontParams.set(field, select.value);
+            window.location.search = fontParams.toString();
+          });
+        });
+
+        var current = document.getElementById('font-lab-current');
+        if (current) {
+          current.textContent = fields.map(function(field) {
+            return field + '=' + document.documentElement.getAttribute('data-' + field + '-font');
+          }).join(' / ');
         }
       }
     });
