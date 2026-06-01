@@ -7,14 +7,15 @@ featured: true
 book_notes: true
 ---
 
-## May 26 | *Maintenance: Of Everything* by Stewart Brand 
-
-Currently reading. A bit of a punt but I'm enjoying it. On the surface it's about keeping sailing boats and motorbikes in good nick, but there's more to it --- how we maintain ourselves, our relationships and our lives.
-
-
-## May 26 | *What Is Intelligence?* by Blaise Agüera y Arcas 
+## Jun 26 | *What Is Intelligence?* by Blaise Agüera y Arcas 
 
 Currently reading. First impression: thoughtful, dense with technical detail, and quite provocative. I don't like some of the ideas being put forward (LLMs are conscious, for example) but I do look forward to reading Agüera y Arcas justify them.
+
+## May 26 | *Maintenance: Of Everything* by Stewart Brand (4/5)
+
+_'Taking responsibility for something can be a radical act.'_ On the surface, _Maintenance: Of Everything_ is about keeping sailing boats and motorbikes in good nick, but there's more to it --- how we maintain ourselves, our relationships and our lives. While I was reading the book, a magnet fell out of the case housing my e-reader (the cheapest one on Amazon). Previously I might have lived without, or bought a new one. Instead, I fixed it. Now I feel a small sense of pride whenever I use the e-reader.
+
+The book is beautifully designed and put together, and it includes interesting sidebars from authors that commented online as Brand openly drafted the book on [Works in Progress](https://books.worksinprogress.co/). Strong recommend.
 
 
 ## Apr 26 | *Cat's Cradle* by Kurt Vonnegut (4/5)
