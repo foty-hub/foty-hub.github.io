@@ -108,7 +108,13 @@ class OneStepWorldModel(nnx.Module):
 
 ## The Training Loop
 
-This is a fairly bog-standard `nnx` training loop, which I've just included for those who are curious. The big difference vs PyTorch is the use of `nnx.value_and_grad` --- we tell JAX to give us the gradient over a specific function, rather than computing a loss and calling `loss.backward()`. For more on the differences and similarities, check out [this post](https://cloud.google.com/blog/products/ai-machine-learning/guide-to-jax-for-pytorch-developers).
+To train the model, I'm using a basic loss function, which just computes the squared distance between the model prediction $f_\theta(s_t, a_t)$ and the true next state $s_{t+1}$. We should really normalise each dimension of the state for this calculation (say the cart velocity was 10x larger than everything else --- without normalisation it will dominate the prediction error, and the model will overly focus on it). But the un-normalised loss is good enough for this demo.
+
+$$
+\mathcal{L}(\theta) = || f_\theta(s_t, a_t) - s_{t+1} ||^2
+$$
+
+We'll combine our loss function with a fairly bog-standard `nnx` training loop. The big difference vs. PyTorch is the use of `nnx.value_and_grad` --- we tell JAX to give us the gradient over a specific function, rather than computing a loss and calling `loss.backward()`. For more on Torch vs JAX, check out [this post](https://cloud.google.com/blog/products/ai-machine-learning/guide-to-jax-for-pytorch-developers).
 
 ```python
 model = OneStepWorldModel(nnx.Rngs(0))
@@ -311,7 +317,8 @@ I'd say that's pretty good. We've asked our policy to keep the pole upright, and
 
 - Our data was driven by a random policy, so most of it is dissimilar to the states the policy encounters: a controlled, upright position. We can run more episodes with the model-derived policy and train a model with a blend of old and new data. That newer model will be more familiar with the kinds of state the policy ends up in, so it can make better predictions.
 - We're training our model on a simple one-step prediction error, but we actually want to unroll it over a whole horizon. Instead of training on single $(s, a, s')$ transitions, we could train our model on longer prediction horizons --- that's what we ultimately care about.
-- Our action sampling strategy is pretty bad. Cartpole only has a 1-dimensional action space, so we can get good coverage of the space with a brute-force approach like random shooting. But on real problems our action space is far larger. There's a subtler issue too: with random shooting, our first action doesn't really have anything to do with the rest of its sequence. Maybe the best trajectory happens to pick a rubbish first action, then loads of great ones afterwards --- but then we only take the first action and discard the rest. Whoops. That's where smarter approaches which actively optimise an action trajectory become a lot more attractive.
+- As mentioned above, the state we use in the loss function isn't normalised. That's an easy fix - just divide by the standard deviation of each of the state components in the dataset (`jnp.std(buffers['state'], axis=-1)`).
+- Our action sampling strategy is pretty bad. Cartpole only has a 1-dimensional action space, so we can get good coverage of the space with a brute-force approach like random shooting. But on real problems our action space is far larger. There's a more subtle issue too: with random shooting, our first action doesn't really have anything to do with the rest of its sequence. Maybe the best trajectory happens to pick a rubbish first action, then loads of great ones afterwards --- but then we only take the first action and discard the rest. Whoops. That's where smarter approaches which actively optimise an action trajectory become a lot more attractive.
 
 Those are all sensible tweaks, but I think there's a more interesting challenge. Let's test our model with a harder task: can it transfer to a reward function which demands that the pole stays down?
 
