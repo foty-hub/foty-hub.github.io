@@ -45,10 +45,10 @@ I covered fast data collection using MJX in [my last post]({% post_url 2026-05-2
   <figcaption>Our data collection looks like this: task-agnostic random action selection. The agent controls the horizontal speed of the cart, either left or right.</figcaption>
 </figure>
 
-With data collected, we can train a basic neural network via gradient descent. I'm using Google's `flax.nnx` library for this because it works well with the JAX transforms we're using elsewhere.
+We'll store and access transitions $(s, a, s')$. With data collected, we can train a basic neural network to predict $s'$ given the initial state-action pair. I'm using Google's `flax.nnx` library for this because it works well with the JAX transforms we're using elsewhere.
 
 ```python
-# define a simple network
+# Define one layer of the network.
 class LayerBlock(nnx.Module):
     "A single linear layer using batchnorm for stable training."
     def __init__(
@@ -74,7 +74,7 @@ class LayerBlock(nnx.Module):
             x = layer(x)
         return x
 
-
+# Stick a few layers together for our full network.
 class OneStepWorldModel(nnx.Module):
     def __init__(self, rngs: nnx.Rngs):
         self.layers = nnx.List(
