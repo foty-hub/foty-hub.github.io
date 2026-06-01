@@ -16,8 +16,8 @@ draft: false
   - [Generating Actions](#generating-actions)
   - [Deriving Our Policy](#deriving-our-policy)
 - [How Does It Do?](#how-does-it-do)
+  - [The Bigger Picture](#the-bigger-picture)
 <!--toc:end-->
-
 
 
 # What Is a World Model?
@@ -141,13 +141,10 @@ def train_step(model, optimizer, key):
     loss, grads = loss_fn(model, batch)
     # This is where the model weights actually get updated.
     optimizer.update(model, grads)
-    return loss
 
-# Keeping this loop outside of jit to prevent it being
-# unrolled - would make for very slow jit compilation.
 for _ in range(n_train_steps):
     step_key, key = jax.random.split(key)
-    loss = train_step(model, optimizer, key)
+    train_step(model, optimizer, key)
 ```
 
 And we get a nice looking loss curve. It looks like our network has learned to model _something_, but loss is pretty meaningless --- we care about results! To assess the usefulness of our world model, let's use it to control a cart.
@@ -320,6 +317,7 @@ I'd say that's pretty good. We've asked our policy to keep the pole upright, and
 - As mentioned above, the state we use in the loss function isn't normalised. That's an easy fix - just divide by the standard deviation of each of the state components in the dataset (`jnp.std(buffers['state'], axis=-1)`).
 - Our action sampling strategy is pretty bad. Cartpole only has a 1-dimensional action space, so we can get good coverage of the space with a brute-force approach like random shooting. But on real problems our action space is far larger. There's a more subtle issue too: with random shooting, our first action doesn't really have anything to do with the rest of its sequence. Maybe the best trajectory happens to pick a rubbish first action, then loads of great ones afterwards --- but then we only take the first action and discard the rest. Whoops. That's where smarter approaches which actively optimise an action trajectory become a lot more attractive.
 
+## The Bigger Picture
 Those are all sensible tweaks, but I think there's a more interesting challenge. Let's test our model with a harder task: can it transfer to a reward function which demands that the pole stays down?
 
 <figure class="video">
@@ -334,6 +332,6 @@ Err. No. It can't transfer at all.
 
 What's going wrong? Well, our policy is completely _myopic_. Our sim is operating at 100Hz, and we're predicting over a 5 step horizon, so we're only planning 0.05s ahead. That short horizon is OK for keeping upright: we start close to the optimal position, and the agent just needs to oppose movement in the bad direction. But for the downwards task, it's too short-sighted. If our agent had a brain, it would be all fast-twitch nerves and no grey matter.
 
-To address this failing, I think we need to get _hierarchical_. That means we move beyond one single model, to layered models which operate on different levels of temporal abstraction. That could be a small one which can operate at 100Hz to do the low-level stuff, as well as a big, slow one that thinks ahead. The big one tells the small one what to do, and together they should be able to transfer. That's my theory at least, and it's what I'm going to work on for the next post in this series. I'd also like to try MPC on some harder environments --- Cartpole is fine for a proof of concept but I think we can do better.
+To address this failing, I think we need to get _hierarchical_. That means moving beyond one single model, to multiple models operating on different levels of temporal abstraction. That could be a small one running at 100Hz to do the fast motor control, as well as a big, slow model that thinks ahead. The big one tells the small one what to do, and together they _should_ be able to handle tougher problems. That's my theory at least, and it's what I'm going to work on for the next post in this series. I'd also like to try MPC on some harder environments --- Cartpole is fine, but I think we can do better.
 
-Thanks for reading. I hope you found this useful, interesting, or at least somewhat risible.
+Thanks for reading. I hope you found this useful, interesting, or risible.
