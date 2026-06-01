@@ -220,13 +220,12 @@ Note that, to give our model something to unroll over, we also need to give it s
 ```python
 def gaussian_action_samples(
     key: jax.Array,
-    batch_size: int = 64,
     horizon: int = 5,
     n_samples: int = 128,
     std: float = 0.2,
     mean: float = 0.0,
 ):
-    shape = (batch_size, n_samples, horizon, 1)  # 1 for action dim
+    shape = (n_samples, horizon, 1)  # 1 for action dim
     samples = mean + std * jax.random.normal(key, shape=shape)
     # cumulative sum over the horizon to accumulate a random walk
     samples = jnp.cumsum(samples, axis=-2)
@@ -261,14 +260,15 @@ And then we simply select next action $a_1^*$. In code:
 
 ```python
 @jax.jit(static_argnames="reward_fn")
-def simulate_policy(key, model, reward_fn: Callable = upright_reward_fn):
+def simulate_policy(
+    key,
+    model_graphdef: nnx.GraphDef,
+    model_state: nnx.State,
+    reward_fn: Callable = upright_reward_fn,
+):
     horizon = 5
     n_samples = 1024
     n_steps = 1000
-
-    # reconstruct nnx model
-    graphdef, model_state = nnx.split(model)
-    model.eval()
 
     # Get initial state
     state = env.reset(key)
@@ -278,11 +278,9 @@ def simulate_policy(key, model, reward_fn: Callable = upright_reward_fn):
         initial_obs = repeat(initial_obs, "... S -> ... N S", N=n_samples)
 
         # sample a Gaussian trajectory
-        actions = gaussian_action_samples(
-            key, batch_size=1, n_samples=n_samples, horizon=horizon
-        )[0]  # remove batch dim
+        actions = gaussian_action_samples(key, n_samples, horizon, std=0.5)
 
-        state_trajectory = rollout(graphdef, model_state, initial_obs, actions)
+        state_trajectory = rollout(model_graphdef, model_state, initial_obs, actions)
 
         # score trajectory based on highest average reward
         rewards = reward_fn(state_trajectory)
