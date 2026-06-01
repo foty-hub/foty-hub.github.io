@@ -13,7 +13,7 @@ Currently reading. First impression: thoughtful, dense with technical detail, an
 
 ## May 26 | *Maintenance: Of Everything* by Stewart Brand (4/5)
 
-_'Taking responsibility for something can be a radical act.'_ On the surface, _Maintenance: Of Everything_ is about keeping sailing boats and motorbikes in good nick, but there's more to it --- how we maintain ourselves, our relationships and our lives. While I was reading the book, a magnet fell out of the case housing my e-reader (the cheapest one on Amazon). Previously I might have lived without, or bought a new one. Instead, I fixed it. Now I feel a small sense of pride whenever I use the e-reader.
+_'Taking responsibility for something can be a radical act.'_ On the surface, _Maintenance: Of Everything_ is about keeping sailing boats and motorbikes in good nick, but there's more to it --- how we maintain ourselves, our relationships and our lives. While I was reading the book, a magnet fell out of the case housing my e-reader (the cheapest one on Amazon). Previously I might have lived without, or bought a new one. Instead, I fixed it. Now I feel a small twinge of pride whenever I use the e-reader.
 
 The book is beautifully designed and put together, and it includes interesting sidebars from authors that commented online as Brand openly drafted the book on [Works in Progress](https://books.worksinprogress.co/). Strong recommend.
 
