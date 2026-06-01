@@ -118,8 +118,6 @@ We'll combine our loss function with a fairly bog-standard `nnx` training loop. 
 
 ```python
 model = OneStepWorldModel(nnx.Rngs(0))
-batch = sample_batch(buffers, jax.random.key(0))
-key = jax.random.key(0)
 
 n_train_steps = 2000
 # Use a simple learning rate schedule, which halves halfway
@@ -142,9 +140,10 @@ def train_step(model, optimizer, key):
     # This is where the model weights actually get updated.
     optimizer.update(model, grads)
 
+key = jax.random.key(0)
 for _ in range(n_train_steps):
     step_key, key = jax.random.split(key)
-    train_step(model, optimizer, key)
+    train_step(model, optimizer, step_key)
 ```
 
 And we get a nice looking loss curve. It looks like our network has learned to model _something_, but loss is pretty meaningless --- we care about results! To assess the usefulness of our world model, let's use it to control a cart.
