@@ -10,21 +10,24 @@
   html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathit,
   html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathbf,
   html[data-math-font]:not([data-math-font="katex-default"]) .katex .mainrm,
-  html[data-math-font]:not([data-math-font="katex-default"]) .katex .text {
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .text,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mopen,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .mclose,
+  html[data-math-font]:not([data-math-font="katex-default"]) .katex .delimsizing {
     font-family: var(--font-math), KaTeX_Math, KaTeX_Main, "Times New Roman", serif !important;
   }
-  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .mathrm,
-  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .mainrm,
-  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .text {
+  html[data-math-font="luciole"] .katex .mathrm,
+  html[data-math-font="luciole"] .katex .mainrm,
+  html[data-math-font="luciole"] .katex .text {
     font-family: "Luciole", "Luciole Math", KaTeX_Main, sans-serif !important;
   }
-  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .mathbf {
+  html[data-math-font="luciole"] .katex .mathbf {
     font-family: "Luciole", "Luciole Math", KaTeX_Main, sans-serif !important;
     font-weight: 700;
   }
-  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .unicode-math-glyphs,
-  html[data-math-font="fira-math"]:not([data-math-font="katex-default"]) .katex .unicode-math-glyphs,
-  html[data-math-font="lete-sans-math"]:not([data-math-font="katex-default"]) .katex .unicode-math-glyphs {
+  html[data-math-font="luciole"] .katex .unicode-math-glyphs,
+  html[data-math-font="fira-math"] .katex .unicode-math-glyphs,
+  html[data-math-font="lete-sans-math"] .katex .unicode-math-glyphs {
     font-family: var(--font-math), KaTeX_Math, KaTeX_Main, "Times New Roman", serif !important;
     font-style: normal !important;
     font-weight: 400 !important;
