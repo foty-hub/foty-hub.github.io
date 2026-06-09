@@ -11,10 +11,23 @@
   html[data-math-font]:not([data-math-font="katex-default"]) .katex .mathbf,
   html[data-math-font]:not([data-math-font="katex-default"]) .katex .mainrm,
   html[data-math-font]:not([data-math-font="katex-default"]) .katex .text {
-    font-family: var(--font-math), KaTeX_Main, "Times New Roman", serif !important;
+    font-family: var(--font-math), KaTeX_Math, KaTeX_Main, "Times New Roman", serif !important;
   }
-  html[data-math-font]:not([data-math-font="katex-default"]) .katex .gfs-neohellenic-alpha {
-    font-family: "GFS Neohellenic Math", var(--font-math), KaTeX_Main, "Times New Roman", serif !important;
+  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .mathrm,
+  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .mainrm,
+  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .text {
+    font-family: "Luciole", "Luciole Math", KaTeX_Main, sans-serif !important;
+  }
+  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .mathbf {
+    font-family: "Luciole", "Luciole Math", KaTeX_Main, sans-serif !important;
+    font-weight: 700;
+  }
+  html[data-math-font="luciole"]:not([data-math-font="katex-default"]) .katex .unicode-math-glyphs,
+  html[data-math-font="fira-math"]:not([data-math-font="katex-default"]) .katex .unicode-math-glyphs,
+  html[data-math-font="lete-sans-math"]:not([data-math-font="katex-default"]) .katex .unicode-math-glyphs {
+    font-family: var(--font-math), KaTeX_Math, KaTeX_Main, "Times New Roman", serif !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
   }
 </style>
 
@@ -24,55 +37,115 @@
 
 <!-- Initialize KaTeX auto-render on page load -->
 <script>
-  function applyGfsNeohellenicAlphabets(root) {
+  function buildAsciiRangeMap(firstCharacterCode, lastCharacterCode, firstCodePoint, exceptions) {
+    var map = {};
+    for (var code = firstCharacterCode; code <= lastCharacterCode; code += 1) {
+      var character = String.fromCharCode(code);
+      map[character] = String.fromCodePoint((exceptions && exceptions[character]) || firstCodePoint + code - firstCharacterCode);
+    }
+    return map;
+  }
+
+  function buildAsciiListMap(characters, codePoints) {
+    var map = {};
+    Array.prototype.forEach.call(characters, function(character, index) {
+      map[character] = String.fromCodePoint(codePoints[index]);
+    });
+    return map;
+  }
+
+  function addCodePointRange(map, firstSourceCodePoint, lastSourceCodePoint, firstTargetCodePoint) {
+    for (var code = firstSourceCodePoint; code <= lastSourceCodePoint; code += 1) {
+      map[String.fromCodePoint(code)] = String.fromCodePoint(firstTargetCodePoint + code - firstSourceCodePoint);
+    }
+  }
+
+  function addCodePointPairs(map, pairs) {
+    pairs.forEach(function(pair) {
+      map[String.fromCodePoint(pair[0])] = String.fromCodePoint(pair[1]);
+    });
+  }
+
+  function mergeMaps() {
+    var merged = {};
+    Array.prototype.forEach.call(arguments, function(map) {
+      Object.keys(map).forEach(function(key) {
+        merged[key] = map[key];
+      });
+    });
+    return merged;
+  }
+
+  function replaceMathTextNodes(node, map) {
+    var changed = false;
+    Array.prototype.slice.call(node.childNodes).forEach(function(child) {
+      if (child.nodeType !== Node.TEXT_NODE) return;
+
+      var nextValue = Array.from(child.nodeValue).map(function(character) {
+        if (!map[character]) return character;
+        changed = true;
+        return map[character];
+      }).join('');
+
+      child.nodeValue = nextValue;
+    });
+    return changed;
+  }
+
+  function applyUnicodeMathGlyphs(root) {
+    var customUnicodeMathFonts = ['luciole', 'fira-math', 'lete-sans-math'];
+    if (customUnicodeMathFonts.indexOf(document.documentElement.getAttribute('data-math-font')) === -1) return;
+
+    var scriptUpper = buildAsciiListMap('ABCDEFGHIJKLMNOPQRSTUVWXYZ', [
+      0x1D49C, 0x212C, 0x1D49E, 0x1D49F, 0x2130, 0x2131, 0x1D4A2, 0x210B, 0x2110, 0x1D4A5, 0x1D4A6, 0x2112, 0x2133,
+      0x1D4A9, 0x1D4AA, 0x1D4AB, 0x1D4AC, 0x211B, 0x1D4AE, 0x1D4AF, 0x1D4B0, 0x1D4B1, 0x1D4B2, 0x1D4B3, 0x1D4B4,
+      0x1D4B5
+    ]);
+    var doubleStruckUpper = buildAsciiListMap('ABCDEFGHIJKLMNOPQRSTUVWXYZ', [
+      0x1D538, 0x1D539, 0x2102, 0x1D53B, 0x1D53C, 0x1D53D, 0x1D53E, 0x210D, 0x1D540, 0x1D541, 0x1D542, 0x1D543,
+      0x1D544, 0x2115, 0x1D546, 0x2119, 0x211A, 0x211D, 0x1D54A, 0x1D54B, 0x1D54C, 0x1D54D, 0x1D54E, 0x1D54F,
+      0x1D550, 0x2124
+    ]);
+    var frakturUpper = buildAsciiListMap('ABCDEFGHIJKLMNOPQRSTUVWXYZ', [
+      0x1D504, 0x1D505, 0x212D, 0x1D507, 0x1D508, 0x1D509, 0x1D50A, 0x210C, 0x2111, 0x1D50D, 0x1D50E, 0x1D50F,
+      0x1D510, 0x1D511, 0x1D512, 0x1D513, 0x1D514, 0x211C, 0x1D516, 0x1D517, 0x1D518, 0x1D519, 0x1D51A, 0x1D51B,
+      0x1D51C, 0x2128
+    ]);
+    var mathItalic = mergeMaps(
+      buildAsciiRangeMap(65, 90, 0x1D434),
+      buildAsciiRangeMap(97, 122, 0x1D44E, { h: 0x210E })
+    );
+    var greekItalic = {};
+    addCodePointRange(greekItalic, 0x03B1, 0x03C9, 0x1D6FC);
+    addCodePointPairs(greekItalic, [
+      [0x0391, 0x1D6E2], [0x0392, 0x1D6E3], [0x0393, 0x1D6E4], [0x0394, 0x1D6E5], [0x0395, 0x1D6E6],
+      [0x0396, 0x1D6E7], [0x0397, 0x1D6E8], [0x0398, 0x1D6E9], [0x0399, 0x1D6EA], [0x039A, 0x1D6EB],
+      [0x039B, 0x1D6EC], [0x039C, 0x1D6ED], [0x039D, 0x1D6EE], [0x039E, 0x1D6EF], [0x039F, 0x1D6F0],
+      [0x03A0, 0x1D6F1], [0x03A1, 0x1D6F2], [0x03A3, 0x1D6F4], [0x03A4, 0x1D6F5], [0x03A5, 0x1D6F6],
+      [0x03A6, 0x1D6F7], [0x03A7, 0x1D6F8], [0x03A8, 0x1D6F9], [0x03A9, 0x1D6FA], [0x03F5, 0x1D716],
+      [0x03D1, 0x1D717], [0x03F0, 0x1D718], [0x03D5, 0x1D719], [0x03F1, 0x1D71A], [0x03D6, 0x1D71B]
+    ]);
+
     var alphabetMaps = {
-      mathcal: {
-        A: '\u{1D49C}', B: '\u{212C}', C: '\u{1D49E}', D: '\u{1D49F}', E: '\u{2130}', F: '\u{2131}',
-        G: '\u{1D4A2}', H: '\u{210B}', I: '\u{2110}', J: '\u{1D4A5}', K: '\u{1D4A6}', L: '\u{2112}',
-        M: '\u{2133}', N: '\u{1D4A9}', O: '\u{1D4AA}', P: '\u{1D4AB}', Q: '\u{1D4AC}', R: '\u{211B}',
-        S: '\u{1D4AE}', T: '\u{1D4AF}', U: '\u{1D4B0}', V: '\u{1D4B1}', W: '\u{1D4B2}', X: '\u{1D4B3}',
-        Y: '\u{1D4B4}', Z: '\u{1D4B5}'
-      },
-      mathbb: {
-        A: '\u{1D538}', B: '\u{1D539}', C: '\u{2102}', D: '\u{1D53B}', E: '\u{1D53C}', F: '\u{1D53D}',
-        G: '\u{1D53E}', H: '\u{210D}', I: '\u{1D540}', J: '\u{1D541}', K: '\u{1D542}', L: '\u{1D543}',
-        M: '\u{1D544}', N: '\u{2115}', O: '\u{1D546}', P: '\u{2119}', Q: '\u{211A}', R: '\u{211D}',
-        S: '\u{1D54A}', T: '\u{1D54B}', U: '\u{1D54C}', V: '\u{1D54D}', W: '\u{1D54E}', X: '\u{1D54F}',
-        Y: '\u{1D550}', Z: '\u{2124}'
-      },
-      mathfrak: {
-        A: '\u{1D504}', B: '\u{1D505}', C: '\u{212D}', D: '\u{1D507}', E: '\u{1D508}', F: '\u{1D509}',
-        G: '\u{1D50A}', H: '\u{210C}', I: '\u{2111}', J: '\u{1D50D}', K: '\u{1D50E}', L: '\u{1D50F}',
-        M: '\u{1D510}', N: '\u{1D511}', O: '\u{1D512}', P: '\u{1D513}', Q: '\u{1D514}', R: '\u{211C}',
-        S: '\u{1D516}', T: '\u{1D517}', U: '\u{1D518}', V: '\u{1D519}', W: '\u{1D51A}', X: '\u{1D51B}',
-        Y: '\u{1D51C}', Z: '\u{2128}'
-      }
+      mathcal: scriptUpper,
+      mathscr: scriptUpper,
+      mathbb: doubleStruckUpper,
+      mathfrak: mergeMaps(frakturUpper, buildAsciiRangeMap(97, 122, 0x1D51E)),
+      mathnormal: mergeMaps(mathItalic, greekItalic),
+      mathit: mergeMaps(mathItalic, greekItalic)
     };
-    alphabetMaps.mathscr = alphabetMaps.mathcal;
 
-    Array.prototype.slice.call(root.querySelectorAll('.katex-html .mathcal, .katex-html .mathscr, .katex-html .mathbb, .katex-html .mathfrak')).forEach(function(node) {
-      if (node.getAttribute('data-gfs-neohellenic-alpha') === 'true') return;
+    Array.prototype.slice.call(root.querySelectorAll('.katex-html .mathcal, .katex-html .mathscr, .katex-html .mathbb, .katex-html .mathfrak, .katex-html .mathnormal, .katex-html .mathit')).forEach(function(node) {
+      if (node.getAttribute('data-unicode-math-glyphs') === 'true') return;
 
-      var mapName = ['mathcal', 'mathscr', 'mathbb', 'mathfrak'].find(function(name) {
+      var mapName = ['mathcal', 'mathscr', 'mathbb', 'mathfrak', 'mathnormal', 'mathit'].find(function(name) {
         return node.classList.contains(name);
       });
       var map = alphabetMaps[mapName];
-      var changed = false;
+      if (!map || !replaceMathTextNodes(node, map)) return;
 
-      Array.prototype.slice.call(node.childNodes).forEach(function(child) {
-        if (child.nodeType !== Node.TEXT_NODE) return;
-        var nextValue = child.nodeValue.replace(/[A-Z]/g, function(value) {
-          if (!map[value]) return value;
-          changed = true;
-          return map[value];
-        });
-        child.nodeValue = nextValue;
-      });
-
-      if (changed) {
-        node.classList.add('gfs-neohellenic-alpha');
-        node.setAttribute('data-gfs-neohellenic-alpha', 'true');
-      }
+      node.classList.add('unicode-math-glyphs');
+      node.setAttribute('data-unicode-math-glyphs', 'true');
     });
   }
 
@@ -88,7 +161,7 @@
       ignoredTags: ['script', 'noscript', 'style', 'textarea', 'code', 'pre'],
       throwOnError: false
     });
-    applyGfsNeohellenicAlphabets(document.body);
+    applyUnicodeMathGlyphs(document.body);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
