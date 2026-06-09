@@ -331,4 +331,4 @@ What's going wrong? Well, our policy is completely _myopic_. Our sim is operatin
 
 To address this failing, I think we need to get _hierarchical_. That means moving beyond one single model, to multiple models operating on different levels of temporal abstraction. That could be a small one running at 100Hz to do the fast motor control, as well as a big, slow model that thinks ahead. The big one tells the small one what to do, and together they _should_ be able to handle tougher problems. That's my theory at least, and it's what I'm going to work on for the next post in this series. I'd also like to try MPC on some harder environments --- Cartpole is fine, but I think we can do better.
 
-Thanks for reading. I hope you found this useful, interesting, or at least not completely risible.
+Thanks for reading. I hope you found this useful or interesting.
