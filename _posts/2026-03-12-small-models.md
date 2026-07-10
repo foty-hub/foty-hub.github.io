@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "General AI"
-subtitle: "ChatGPT is useful because it wasn’t built for you"
+subtitle: "ChatGPT is useful because it wasn’t built for you."
 draft: false
 ---
 

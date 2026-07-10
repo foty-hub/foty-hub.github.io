@@ -7,9 +7,13 @@ featured: true
 book_notes: true
 ---
 
-## Jun 26 | *What Is Intelligence?* by Blaise Agüera y Arcas 
+## Jun 26 | *What Is Intelligence?* by Blaise Agüera y Arcas (5/5) 
 
-Currently reading. First impression: thoughtful, dense with technical detail, and quite provocative. I don't like some of the ideas being put forward (LLMs are conscious, for example) but I do look forward to reading Agüera y Arcas justify them.
+A fascinating read: thoughtful, dense with technical detail, and quite provocative. The book is pretty broad, covering topics from code which evolves to self-replicate the decentralised and confected nature of consciousness, and whether sequence-learning is sufficient for AGI. I've never found myself wanting to reread a 600-page tome before, but there's so much information in *What is Intelligence* that I feel I need another go around to have a hope of beginning to absorb it.
+
+The book is contrarian. Early on, Agüera tells the reader that he believes LLMs are intelligent. It was a sentence I balked at. But through the book he works through his thoughts in such a considered, self-consistent manner that it really does start to bear fruit. I still feel a little innately sceptical of.
+
+
 
 ## May 26 | *Maintenance: Of Everything* by Stewart Brand (4/5)
 
