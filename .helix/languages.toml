@@ -1,0 +1,12 @@
+[[language]]
+name = "htmldjango"
+language-id = "html"
+file-types = [
+  { glob = "*.html" },
+  { glob = "*.liquid" },
+]
+auto-format = false
+indent = { tab-width = 2, unit = "  " }
+language-servers = [
+  { name = "vscode-html-language-server", except-features = ["format"] }
+]
