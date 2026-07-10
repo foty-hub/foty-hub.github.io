@@ -17,6 +17,7 @@ math: true
         <option value="schibsted-source">Schibsted Grotesk / Source Sans 3</option>
         <option value="sora-dm">Sora / DM Sans</option>
         <option value="fraunces-dm">Fraunces / DM Sans</option>
+        <option value="fraunces-monolisa-text">Fraunces / MonoLisa Text</option>
       </select>
     </label>
     <label>
@@ -41,6 +42,13 @@ math: true
       </select>
     </label>
     <label>
+      <span class="font-lab-range-label">
+        <span>Fraunces wonk</span>
+        <output id="font-lab-fraunces-wonk-value" for="font-lab-fraunces-wonk">1</output>
+      </span>
+      <input id="font-lab-fraunces-wonk" type="range" name="fraunces-wonk" min="0" max="1" step="0.05" value="1">
+    </label>
+    <label>
       Math
       <select name="math">
         <option value="katex-default">KaTeX default</option>
@@ -54,6 +62,83 @@ math: true
         <option value="newpx">NewPX / Pagella preview</option>
       </select>
     </label>
+    <fieldset class="font-lab-feature-group">
+      <legend>MonoLisa Text features</legend>
+      <div class="font-lab-feature-list">
+        <label><input type="checkbox" name="monolisa-text-feature" value="liga" data-monolisa-text-feature checked> liga</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="calt" data-monolisa-text-feature checked> calt</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="zero" data-monolisa-text-feature> zero</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss01" data-monolisa-text-feature> ss01</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss02" data-monolisa-text-feature> ss02</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss03" data-monolisa-text-feature checked> ss03</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss04" data-monolisa-text-feature> ss04</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss05" data-monolisa-text-feature> ss05</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss06" data-monolisa-text-feature> ss06</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss07" data-monolisa-text-feature> ss07</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss08" data-monolisa-text-feature checked> ss08</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss09" data-monolisa-text-feature checked> ss09</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss10" data-monolisa-text-feature> ss10</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss11" data-monolisa-text-feature> ss11</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss12" data-monolisa-text-feature> ss12</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss13" data-monolisa-text-feature> ss13</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss14" data-monolisa-text-feature> ss14</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss15" data-monolisa-text-feature checked> ss15</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss16" data-monolisa-text-feature> ss16</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss17" data-monolisa-text-feature> ss17</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss18" data-monolisa-text-feature> ss18</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss19" data-monolisa-text-feature> ss19</label>
+        <label><input type="checkbox" name="monolisa-text-feature" value="ss20" data-monolisa-text-feature> ss20</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="font-lab-feature-group">
+      <legend>MonoLisa Code features</legend>
+      <div class="font-lab-feature-list">
+        <label><input type="checkbox" name="monolisa-code-feature" value="liga" data-monolisa-code-feature> liga</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="calt" data-monolisa-code-feature> calt</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="zero" data-monolisa-code-feature> zero</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss01" data-monolisa-code-feature> ss01</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss02" data-monolisa-code-feature> ss02</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss03" data-monolisa-code-feature> ss03</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss04" data-monolisa-code-feature> ss04</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss05" data-monolisa-code-feature> ss05</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss06" data-monolisa-code-feature> ss06</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss07" data-monolisa-code-feature> ss07</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss08" data-monolisa-code-feature checked> ss08</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss09" data-monolisa-code-feature checked> ss09</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss10" data-monolisa-code-feature> ss10</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss11" data-monolisa-code-feature> ss11</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss12" data-monolisa-code-feature> ss12</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss13" data-monolisa-code-feature checked> ss13</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss14" data-monolisa-code-feature checked> ss14</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss15" data-monolisa-code-feature> ss15</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss16" data-monolisa-code-feature> ss16</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss17" data-monolisa-code-feature> ss17</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss18" data-monolisa-code-feature> ss18</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss19" data-monolisa-code-feature> ss19</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="ss20" data-monolisa-code-feature> ss20</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv01" data-monolisa-code-feature checked> cv01</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv02" data-monolisa-code-feature> cv02</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv03" data-monolisa-code-feature> cv03</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv04" data-monolisa-code-feature> cv04</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv05" data-monolisa-code-feature checked> cv05</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv06" data-monolisa-code-feature> cv06</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv07" data-monolisa-code-feature> cv07</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv08" data-monolisa-code-feature checked> cv08</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv09" data-monolisa-code-feature checked> cv09</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv10" data-monolisa-code-feature> cv10</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv11" data-monolisa-code-feature> cv11</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv12" data-monolisa-code-feature> cv12</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv13" data-monolisa-code-feature> cv13</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv14" data-monolisa-code-feature> cv14</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv15" data-monolisa-code-feature> cv15</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv16" data-monolisa-code-feature> cv16</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv17" data-monolisa-code-feature> cv17</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv18" data-monolisa-code-feature> cv18</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv19" data-monolisa-code-feature> cv19</label>
+        <label><input type="checkbox" name="monolisa-code-feature" value="cv20" data-monolisa-code-feature> cv20</label>
+      </div>
+    </fieldset>
   </form>
 
   <p id="font-lab-current" class="font-lab-current"></p>
@@ -110,6 +195,7 @@ math: true
 
   <section class="font-lab-section">
     <h2>Math and Code</h2>
+    <p class="font-lab-monolisa-sample">MonoLisaText: office affine efficient ffl ffi file flag 0 O == != &lt;= &gt;= -&gt; =&gt; &amp;&amp; ||</p>
     <p>Inline math should sit comfortably in text: $x_{t+1} = f_\theta(x_t, u_t) + \epsilon_t$, while display math should still feel deliberate. This sample includes specialist alphabets and stretchy delimiters: $\mathcal{L}(x)$, $\mathscr{R}$, $\mathbb{R}$, $\mathfrak{G}$, and $\left[\frac{x_t}{1 + \gamma^2}\right]$.</p>
 
     $$
@@ -118,7 +204,8 @@ math: true
 
     <pre class="highlight"><code>def rollout(model, state, actions):
     for action in actions:
-        state = model.predict(state, action)
+        if action != None and action &lt;= model.limit:
+            state = model.predict(state, action)
     return state</code></pre>
   </section>
 </article>

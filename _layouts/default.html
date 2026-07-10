@@ -22,17 +22,52 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&amp;family=Bricolage+Grotesque:wght@400..800&amp;family=DM+Sans:ital,wght@0,400..700;1,400..700&amp;family=Fraunces:opsz,wght@9..144,400..900&amp;family=Schibsted+Grotesk:wght@400..800&amp;family=Sora:wght@400..800&amp;family=Source+Sans+3:ital,wght@0,400..700;1,400..700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&amp;family=Bricolage+Grotesque:wght@400..800&amp;family=DM+Sans:ital,wght@0,400..700;1,400..700&amp;family=Fraunces:ital,opsz,wght,WONK@0,9..144,400..900,0..1;1,9..144,400..900,0..1&amp;family=Schibsted+Grotesk:wght@400..800&amp;family=Sora:wght@400..800&amp;family=Source+Sans+3:ital,wght@0,400..700;1,400..700&amp;display=swap">
+  <link rel="stylesheet" href="{{ '/assets/fonts/monolisa/monolisa-webfont-code/monolisa.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/fonts/monolisa/monolisa-webfont-text/monolisa.css' | relative_url }}">
   <script>
     (function() {
+      function numberedFeatures(prefix, count) {
+        var features = [];
+        for (var i = 1; i <= count; i += 1) {
+          features.push(prefix + ("0" + i).slice(-2));
+        }
+        return features;
+      }
+
+      function enabledFeaturesFromParam(paramName, defaultFeatures, allowedFeatures, params) {
+        var requestedFeatures = params.has(paramName) ? params.get(paramName) : null;
+        var selectedFeatures = requestedFeatures === null ? defaultFeatures : requestedFeatures.split(",");
+        var enabledFeatures = {};
+        selectedFeatures.forEach(function(feature) {
+          if (allowedFeatures.indexOf(feature) !== -1) enabledFeatures[feature] = true;
+        });
+        return enabledFeatures;
+      }
+
+      function activeFeatureList(features, enabledFeatures) {
+        return features.filter(function(feature) { return enabledFeatures[feature]; });
+      }
+
+      function featureSettings(features, enabledFeatures) {
+        return features.map(function(feature) {
+          return '"' + feature + '" ' + (enabledFeatures[feature] ? "1" : "0");
+        }).join(", ");
+      }
+
+      var monolisaTextFeatures = ["liga", "calt", "zero"].concat(numberedFeatures("ss", 20));
+      var monolisaCodeFeatures = ["liga", "calt", "zero"].concat(numberedFeatures("ss", 20), numberedFeatures("cv", 20));
+      var defaultMonolisaTextFeatures = ["liga", "calt", "ss03", "ss08", "ss09", "ss15"];
+      var defaultMonolisaCodeFeatures = ["cv01", "ss08", "ss09", "ss13", "ss14", "cv05", "cv08", "cv09"];
+
       var choices = {
-        fontPairing: ["bricolage-dm", "archivo-dm", "schibsted-source", "sora-dm", "fraunces-dm"],
+        fontPairing: ["bricolage-dm", "archivo-dm", "schibsted-source", "sora-dm", "fraunces-dm", "fraunces-monolisa-text"],
         math: ["katex-default", "luciole", "fira-math", "lete-sans-math", "euler", "concrete", "gfs-neohellenic", "stix-two", "newpx"],
         bodyWeight: ["400", "425", "450", "475", "500"],
         bodySize: ["100", "102", "104", "106", "108", "110"]
       };
       var defaults = {
-        fontPairing: "fraunces-dm",
+        fontPairing: "fraunces-monolisa-text",
         math: "lete-sans-math",
         bodyWeight: "400",
         bodySize: "100"
@@ -51,37 +86,28 @@
         if (choices[name].indexOf(value) === -1) value = defaults[name];
         document.documentElement.setAttribute(dataAttributes[name], value);
       });
+
+      var wonk = parseFloat(params.get("fraunces-wonk") || "1");
+      if (!isFinite(wonk)) wonk = 0;
+      wonk = Math.min(1, Math.max(0, wonk));
+      var wonkValue = String(Math.round(wonk * 100) / 100);
+      document.documentElement.setAttribute("data-fraunces-wonk", wonkValue);
+      document.documentElement.style.setProperty("--fraunces-wonk", wonkValue);
+
+      var enabledTextFeatures = enabledFeaturesFromParam("monolisa-text-features", defaultMonolisaTextFeatures, monolisaTextFeatures, params);
+      var enabledCodeFeatures = enabledFeaturesFromParam("monolisa-code-features", defaultMonolisaCodeFeatures, monolisaCodeFeatures, params);
+      var activeTextFeatures = activeFeatureList(monolisaTextFeatures, enabledTextFeatures);
+      var activeCodeFeatures = activeFeatureList(monolisaCodeFeatures, enabledCodeFeatures);
+      var textFeatureSettings = featureSettings(monolisaTextFeatures, enabledTextFeatures);
+      var codeFeatureSettings = featureSettings(monolisaCodeFeatures, enabledCodeFeatures);
+
+      document.documentElement.setAttribute("data-monolisa-text-features", activeTextFeatures.join(",") || "none");
+      document.documentElement.setAttribute("data-monolisa-code-features", activeCodeFeatures.join(",") || "none");
+      document.documentElement.style.setProperty("--monolisa-text-feature-settings", textFeatureSettings);
+      document.documentElement.style.setProperty("--monolisa-code-feature-settings", codeFeatureSettings);
     })();
   </script>
   <style>
-    @font-face {
-      font-family: "MonoLisa";
-      src: url("{{ '/assets/fonts/MonoLisa-Regular.woff2' | relative_url }}") format("woff2");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "MonoLisa";
-      src: url("{{ '/assets/fonts/MonoLisa-RegularItalic.woff2' | relative_url }}") format("woff2");
-      font-weight: 400;
-      font-style: italic;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "MonoLisa";
-      src: url("{{ '/assets/fonts/MonoLisa-Bold.woff2' | relative_url }}") format("woff2");
-      font-weight: 700;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "MonoLisa";
-      src: url("{{ '/assets/fonts/MonoLisa-BoldItalic.woff2' | relative_url }}") format("woff2");
-      font-weight: 700;
-      font-style: italic;
-      font-display: swap;
-    }
     @font-face {
       font-family: "Euler Math";
       src: url("{{ '/assets/fonts/math/euler/Euler-Math.woff2' | relative_url }}") format("woff2");
@@ -203,36 +229,57 @@
     }
 
     :root {
-      --font-body: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-body: "MonoLisaText", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
       --font-display: var(--font-heading);
-      --font-mono: "MonoLisa", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --font-mono: "MonoLisaCode", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       --font-math: "Lete Sans Math";
       --font-body-weight: 400;
       --font-body-size: 1rem;
       --font-body-line-height: 1.6rem;
       --font-heading-weight: 600;
       --font-display-weight: 700;
+      --body-feature-settings: var(--monolisa-text-feature-settings);
+      --heading-variation-settings: "WONK" var(--fraunces-wonk);
+      --fraunces-wonk: 1;
+      --monolisa-text-feature-settings: "liga" 1, "calt" 1, "zero" 0, "ss01" 0, "ss02" 0, "ss03" 1, "ss04" 0, "ss05" 0, "ss06" 0, "ss07" 0, "ss08" 1, "ss09" 1, "ss10" 0, "ss11" 0, "ss12" 0, "ss13" 0, "ss14" 0, "ss15" 1, "ss16" 0, "ss17" 0, "ss18" 0, "ss19" 0, "ss20" 0;
+      --monolisa-code-feature-settings: "liga" 0, "calt" 0, "zero" 0, "ss01" 0, "ss02" 0, "ss03" 0, "ss04" 0, "ss05" 0, "ss06" 0, "ss07" 0, "ss08" 1, "ss09" 1, "ss10" 0, "ss11" 0, "ss12" 0, "ss13" 1, "ss14" 1, "ss15" 0, "ss16" 0, "ss17" 0, "ss18" 0, "ss19" 0, "ss20" 0, "cv01" 1, "cv02" 0, "cv03" 0, "cv04" 0, "cv05" 1, "cv06" 0, "cv07" 0, "cv08" 1, "cv09" 1, "cv10" 0, "cv11" 0, "cv12" 0, "cv13" 0, "cv14" 0, "cv15" 0, "cv16" 0, "cv17" 0, "cv18" 0, "cv19" 0, "cv20" 0;
     }
     html[data-font-pairing="bricolage-dm"] {
       --font-body: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-heading: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --body-feature-settings: normal;
+      --heading-variation-settings: normal;
     }
     html[data-font-pairing="archivo-dm"] {
       --font-body: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-heading: "Archivo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --body-feature-settings: normal;
+      --heading-variation-settings: normal;
     }
     html[data-font-pairing="schibsted-source"] {
       --font-body: "Source Sans 3", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-heading: "Schibsted Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --body-feature-settings: normal;
+      --heading-variation-settings: normal;
     }
     html[data-font-pairing="sora-dm"] {
       --font-body: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-heading: "Sora", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --body-feature-settings: normal;
+      --heading-variation-settings: normal;
     }
     html[data-font-pairing="fraunces-dm"] {
       --font-body: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+      --body-feature-settings: normal;
+      --heading-variation-settings: "WONK" var(--fraunces-wonk);
+    }
+    html[data-font-pairing="fraunces-monolisa-text"] {
+      --font-body: "MonoLisaText", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+      --body-feature-settings: var(--monolisa-text-feature-settings);
+      --heading-variation-settings: "WONK" var(--fraunces-wonk);
     }
     html[data-math-font="euler"] { --font-math: "Euler Math"; }
     html[data-math-font="concrete"] { --font-math: "Concrete Math"; }
@@ -242,7 +289,7 @@
     html[data-math-font="fira-math"] { --font-math: "Fira Math"; }
     html[data-math-font="lete-sans-math"] { --font-math: "Lete Sans Math"; }
     html[data-math-font="newpx"] { --font-math: "NewPX Preview"; }
-    html[data-body-weight="400"] { --font-body-weight: 400; }
+    html[data-body-weight="400"] { --font-body-weight: 350; }
     html[data-body-weight="425"] { --font-body-weight: 425; }
     html[data-body-weight="450"] { --font-body-weight: 450; }
     html[data-body-weight="475"] { --font-body-weight: 475; }
@@ -271,6 +318,24 @@
       font-family: var(--font-heading);
       font-weight: var(--font-heading-weight);
     }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .tablinks,
+    details.book-note summary .book-main,
+    details.book-note summary cite,
+    .book-date,
+    .blog-post-listing h3,
+    .font-lab-controls label,
+    .font-lab-feature-group legend,
+    .font-lab-display-sample,
+    .font-lab-chart-label,
+    .font-lab-sans-sample {
+      font-variation-settings: var(--heading-variation-settings);
+    }
     .blog-post h2,
     .blog-post h3,
     .blog-post h4,
@@ -280,6 +345,7 @@
     }
     main p,
     main li {
+      font-feature-settings: var(--body-feature-settings);
       font-size: var(--font-body-size);
       line-height: var(--font-body-line-height);
     }
@@ -307,6 +373,7 @@
       background: #f7f7f7;
       color: #222;
       font-family: var(--font-mono);
+      font-feature-settings: var(--monolisa-code-feature-settings);
       font-size: 0.92em;
     }
     article div.highlighter-rouge {
@@ -333,6 +400,7 @@
       background: transparent;
       color: #222;
       font-family: var(--font-mono);
+      font-feature-settings: var(--monolisa-code-feature-settings);
       font-size: 0.8rem;
       line-height: 1.35;
     }
@@ -535,6 +603,48 @@
       padding: 0.45rem 0.5rem;
       width: 100%;
     }
+    .font-lab-controls input[type="range"] {
+      accent-color: #222;
+      width: 100%;
+    }
+    .font-lab-range-label {
+      align-items: baseline;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .font-lab-feature-group {
+      border: 0;
+      border-top: 1px dotted #ddd;
+      grid-column: 1 / -1;
+      margin: 0.25rem 0 0;
+      padding: 0.8rem 0 0;
+    }
+    .font-lab-feature-group legend {
+      color: #555;
+      font-family: var(--font-heading);
+      font-size: 0.86rem;
+      line-height: 1.2;
+      padding: 0 0.45rem 0 0;
+    }
+    .font-lab-feature-list {
+      display: grid;
+      gap: 0.45rem 0.7rem;
+      grid-template-columns: repeat(auto-fit, minmax(4.75rem, 1fr));
+      margin-top: 0.6rem;
+    }
+    .font-lab-feature-list label {
+      align-items: center;
+      color: #333;
+      display: flex;
+      font-family: var(--font-body);
+      font-size: 0.84rem;
+      gap: 0.35rem;
+      line-height: 1;
+    }
+    .font-lab-feature-list input {
+      margin: 0;
+    }
     .font-lab-current {
       color: #666;
       font-size: 0.95rem;
@@ -584,6 +694,10 @@
     }
     .font-lab-sans-sample {
       font-family: var(--font-heading);
+    }
+    .font-lab-monolisa-sample {
+      font-family: "MonoLisaText", var(--font-body);
+      font-feature-settings: var(--monolisa-text-feature-settings);
     }
     @media (max-width: 640px) {
       details.book-note summary .book-row {
@@ -752,10 +866,27 @@
       if (fontLabControls) {
         var fontParams = new URLSearchParams(window.location.search);
         var fields = ['font-pairing', 'body-size', 'body-weight', 'math'];
+        var summaryFields = fields.concat(['fraunces-wonk', 'monolisa-text-features', 'monolisa-code-features']);
 
         function dataAttributeForField(field) {
           if (field === 'math') return 'data-math-font';
+          if (field === 'fraunces-wonk') return 'data-fraunces-wonk';
+          if (field === 'monolisa-text-features') return 'data-monolisa-text-features';
+          if (field === 'monolisa-code-features') return 'data-monolisa-code-features';
           return 'data-' + field;
+        }
+
+        function updateCurrent() {
+          var current = document.getElementById('font-lab-current');
+          if (!current) return;
+          current.textContent = summaryFields.map(function(field) {
+            return field + '=' + document.documentElement.getAttribute(dataAttributeForField(field));
+          }).join(' / ');
+        }
+
+        function setParamAndReload(field, value) {
+          fontParams.set(field, value);
+          window.location.search = fontParams.toString();
         }
 
         fields.forEach(function(field) {
@@ -765,20 +896,51 @@
 
           select.value = value;
           select.addEventListener('change', function() {
-            fontParams.delete('body');
-            fontParams.delete('heading');
-            fontParams.delete('heading-features');
-            fontParams.set(field, select.value);
-            window.location.search = fontParams.toString();
+            setParamAndReload(field, select.value);
           });
         });
 
-        var current = document.getElementById('font-lab-current');
-        if (current) {
-          current.textContent = fields.map(function(field) {
-            return field + '=' + document.documentElement.getAttribute(dataAttributeForField(field));
-          }).join(' / ');
+        var wonkInput = fontLabControls.querySelector('[name="fraunces-wonk"]');
+        var wonkOutput = document.getElementById('font-lab-fraunces-wonk-value');
+        if (wonkInput) {
+          var wonkValue = document.documentElement.getAttribute('data-fraunces-wonk') || '0';
+          wonkInput.value = wonkValue;
+          if (wonkOutput) wonkOutput.textContent = wonkValue;
+
+          wonkInput.addEventListener('input', function() {
+            document.documentElement.setAttribute('data-fraunces-wonk', wonkInput.value);
+            document.documentElement.style.setProperty('--fraunces-wonk', wonkInput.value);
+            if (wonkOutput) wonkOutput.textContent = wonkInput.value;
+            updateCurrent();
+          });
+          wonkInput.addEventListener('change', function() {
+            setParamAndReload('fraunces-wonk', wonkInput.value);
+          });
         }
+
+        function bindFeatureCheckboxes(selector, paramName, attributeName) {
+          var featureCheckboxes = Array.prototype.slice.call(fontLabControls.querySelectorAll(selector));
+          if (featureCheckboxes.length === 0) return;
+
+          var selectedFeatures = document.documentElement.getAttribute(attributeName) || 'none';
+          var selectedFeatureList = selectedFeatures === 'none' ? [] : selectedFeatures.split(',');
+          featureCheckboxes.forEach(function(checkbox) {
+            checkbox.checked = selectedFeatureList.indexOf(checkbox.value) !== -1;
+            checkbox.addEventListener('change', function() {
+              var features = featureCheckboxes.filter(function(input) {
+                return input.checked;
+              }).map(function(input) {
+                return input.value;
+              });
+              setParamAndReload(paramName, features.join(',') || 'none');
+            });
+          });
+        }
+
+        bindFeatureCheckboxes('[data-monolisa-text-feature]', 'monolisa-text-features', 'data-monolisa-text-features');
+        bindFeatureCheckboxes('[data-monolisa-code-feature]', 'monolisa-code-features', 'data-monolisa-code-features');
+
+        updateCurrent();
       }
     });
   </script>

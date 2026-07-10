@@ -25,12 +25,19 @@
     font-family: "Luciole", "Luciole Math", KaTeX_Main, sans-serif !important;
     font-weight: 700;
   }
+  html[data-math-font="lete-sans-math"] .katex-display > .katex {
+    color: #333;
+    font-weight: 350;
+  }
   html[data-math-font="luciole"] .katex .unicode-math-glyphs,
   html[data-math-font="fira-math"] .katex .unicode-math-glyphs,
   html[data-math-font="lete-sans-math"] .katex .unicode-math-glyphs {
     font-family: var(--font-math), KaTeX_Math, KaTeX_Main, "Times New Roman", serif !important;
     font-style: normal !important;
     font-weight: 400 !important;
+  }
+  html[data-math-font="lete-sans-math"] .katex-display .unicode-math-glyphs {
+    font-weight: 350 !important;
   }
 </style>
 
