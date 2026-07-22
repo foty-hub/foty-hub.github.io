@@ -6,12 +6,12 @@ math: false
 draft: false
 ---
 
-*I recently had the pleasure of spending a week at the Royal Society's Summer Science Exhibition, helping out at an exhibit hosted by my PhD lab (the Applied AI Lab at the Oxford Robotics Institute). Over the course of the week I delivered a spiel about our work countless times to members of the public. I thought I'd note it down for posterity.*
+*I recently had the pleasure of spending a week at the Royal Society's Summer Science Exhibition, helping out at an exhibit hosted by my PhD lab (the A2I lab at the Oxford Robotics Institute). Over the course of the week I delivered a spiel about our work countless times to members of the public. I thought I'd note it down for posterity.*
 
 
 <figure class="illustration">
   <img src="/assets/images/pretty.png" width="640" height="480" alt="Selfie :)">
-  <figcaption>Yours truly at the Royal Society exhibition. A wide thumbs up in honour of Frank, the lab's celebrity wide-armed robot.</figcaption>
+  <figcaption>Yours truly at the exhibition, doing a wide thumbs up in honour of Frank, the lab's wide-armed robot.</figcaption>
 </figure>
 
 # The Spiel
@@ -47,7 +47,7 @@ In short --- robots probably aren't coming for your job, or coming to kill you o
 *A fun aspect of chatting to so many people over the course of the exhibition was being asked questions. Many questions. Here are some that came up repeatedly, and the responses I settled on.*
 
 ## *Haven't robots been doing assembly in factories for decades?*
-They have! The reason is that we can control everything in a factory. If I'm a hole-punching robot in a factory, I don't need to know anything about the world. I get given a chunk of steel, and I move from position *a* to position *b* every time. Forever. If my chunk comes in the wrong orientation, I can't really adapt on the fly. So in factories, we get the benefit of robot control without the need for intelligent decision making. Outside of factories, we're not so lucky --- our metaphorical chunks of steel rarely come the same way twice.
+They have! The reason is that you can control everything in a factory. If I'm a hole-punching robot in a factory, I don't need to know anything about the world. I get given a chunk of steel, and I move from position *a* to position *b* every time. Forever. If my chunk comes in the wrong orientation, I can't really adapt on the fly. So in factories, we get the benefit of robot control without the need for intelligent decision making. Outside of factories, we're not so lucky --- our metaphorical chunks of steel rarely come the same way twice.
 
 
 ## *What about surgical robots?*
@@ -105,7 +105,7 @@ How cool is that? TD learning was invented to help AI learn for itself. But it a
 This one isn't a question, but it was a comment made by a visiting MP. Thanks for the feedback…
 
 # Conclusion
-Thanks for reading! I had a great time practicing my spiel on the poor, unsuspecting members of the British public that came by our exhibit. That said, I'm still learning a lot about robotics, so these answers will doubtless change as I progress along my PhD and become suitably disillusioned. Either way, I hope this post was fun/interesting/useful!
+Thanks for reading! I had a good time practicing my pitch on the poor, unsuspecting British public. That said, I'm still learning a lot about robotics, so these answers will doubtless change, as I progress along my PhD and become suitably disillusioned. Either way, I hope this post was a fun/interesting/useful read!
 
 
-*This post was written by hand (well, keyboard), without the use of LLMs. I know there are lots of em dashes, that's just because I'm a hack.*
+*This post was written by hand (well, keyboard), without the use of LLMs. I know there are lots of em dashes, that's just because I like them.*
