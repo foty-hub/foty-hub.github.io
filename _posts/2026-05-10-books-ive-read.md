@@ -7,13 +7,21 @@ featured: true
 book_notes: true
 ---
 
+## Jul 26 | *The Lost Homestead* by Marina Wheeler (3/5)
+*The Lost Homestead* is interesting, and tough to pin down. Part-memoir, part-biography, part history of India; the book covers the run up to Partition, when the country split into Pakistan and India (and eventually Bangladesh), through to the era of current Modi government. Wheeler digs into the history alongside stories of her family, predominantly those of her mother, Dip. The book is well-written, and Dip is a likable, self-possessed main character. When Dip leaves India with her husband, Dip's mother worries that, without servants, she'll spend her life scrubbing pans. In the present, Wheeler looks up from her laptop. Her mother's hands are in the sink.
+
+Alongside the memoir, Wheeler offers commentary on Indian history and politics. I don't know enough to judge whether Wheeler is right or wrong, but these sections read as shallow. The biographical detail leans on her wealthy family's history, who were shielded from much of the turmoil she describes. For example, the great loss of Partition involves her grandfather abandoning his estate in the Punjab, to move his family into a, err, glittering mansion in Delhi. When Wheeler wonders whether the British Empire is unfairly vilified, she marvels at the railways, but skims over the Bengal Famine.
+
+I haven't read much about modern Indian history. To that end, the book was an easy-to-read, broad strokes introduction with a charming personal touch. But as an authoritative history with a substantive treatment of modern India, it falls short.
+
+
 ## Jun 26 | *What Is Intelligence?* by Blaise Agüera y Arcas (5/5) 
 
 A fascinating read: thoughtful, dense (very dense) with technical detail, and quite provocative. The book is fairly broad, covering topics from evolving code, to the decentralised nature of consciousness, and whether sequence-learning is sufficient for generally intelligent AI. I've never found myself wanting to reread a 600-page tome before, but there's so much information in *What is Intelligence* that I need another go around just to begin absorbing it.
 
-The book is contrarian. Early on, Agüera tells the reader that he believes LLMs are intelligent. I balked at that. But through the book he works through his thoughts in such a considered, self-consistent manner that it really does start to bear fruit. A memorable discussion touches on ['sphexishness'](https://en.wikipedia.org/wiki/Sphex#Use_in_philosophy) --- behaviour that looks intelligent becomes unimpressive once you how it works. There's a fascinating diversion on the decentralised nature of cognition in ocotpuses (or octopi, or octopodes…), and how it could relate to patients whose brains have been split down the middle. I've never read anything quite like it.
+The book is contrarian. Early on, Agüera tells the reader that he believes LLMs are intelligent. Naturally, I balked at that. But through the book he works through his thoughts in such a considered, self-consistent manner that it really does bear fruit. A memorable discussion touches on '[sphexishness](https://en.wikipedia.org/wiki/Sphex#Use_in_philosophy)' --- behaviour that looks intelligent becomes unimpressive once you know how it works. There's another fascinating diversion on the decentralised nature of cognition in octopuses (or octopi, or octopodes…), and how it relates to patients whose brains have been split down the middle. I've never read anything quite like it.
 
- Ultimately, I'm still a little sceptical of Agüera's claims about LLM intelligence, but have grown more open to his views. Regardless, the book is a fascinating, challenging read, that's well worth the time invested.
+ Ultimately, although I'm still a little sceptical of Agüera's ideas about intelligence, I've grown much more open to his views. Either way, the book is a fascinating, challenging read, that's well worth the time invested.
 
 
 ## May 26 | *Maintenance: Of Everything* by Stewart Brand (4/5)
@@ -86,7 +94,7 @@ The book is well-written and clearly communicated, but for me it doesn't fully a
 
 ## Feb 25 | *Why Greatness Cannot be Planned* by Ken Stanley & Joel Lehman (5/5)
 
-A discussion of invention and discovery, centred on a machine learning experiment named PicBreeder. The authors argue that interesting discoveries don't happen because of straight shots from A to Z; rather, intermediate results that enable discoveries are unpredictable, forming *stepping stones* to new ideas. An example from the book: Suppose you're some God three billion years ago, and you want to develop an intelligent species from the primordial soup. Should you start administering the SAT to single-celled gunk in the hopes of breeding big-brained bacteria? Probably not. To develop intelligent life, many apparently-unrelated steps had to happen first: meat-eating, warm-bloodedness, aerobic respiration, eyes, legs, lungs, and more.
+A discussion of invention and discovery, centred on a machine learning experiment named PicBreeder. The authors argue that interesting discoveries don't happen because of straight shots from A to Z; rather, intermediate results that enable discoveries are unpredictable, forming *stepping stones* to new ideas. An example from the book: Suppose you're some God three billion years ago, and you want to develop an intelligent species from the primordial soup. Should you start administering the SAT to single-celled gunk in the hopes of breeding big-brained bacteria? Probably not. To develop intelligent life, many apparently-unrelated steps had to happen first: meat-eating, warm-bloodedness, aerobic respiration, eyes, lungs, legs, and more.
 
 Stanley and Lehman's point, then, is that we should focus on novel or interesting discoveries which are within reach, rather than aiming for distant goals which we can't even sketch a route to. In ML terms, they advocate evolutionary methods and novelty search over objective-driven optimisation. Beyond ML, they argue that we should embrace serendipity and permit ourselves to follow our interests. A fantastic book which altered my perspective on decision-making in both ML and real life.
 
