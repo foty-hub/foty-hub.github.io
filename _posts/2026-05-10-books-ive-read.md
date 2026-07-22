@@ -9,10 +9,11 @@ book_notes: true
 
 ## Jun 26 | *What Is Intelligence?* by Blaise Agüera y Arcas (5/5) 
 
-A fascinating read: thoughtful, dense with technical detail, and quite provocative. The book is pretty broad, covering topics from code which evolves to self-replicate the decentralised and confected nature of consciousness, and whether sequence-learning is sufficient for AGI. I've never found myself wanting to reread a 600-page tome before, but there's so much information in *What is Intelligence* that I feel I need another go around to have a hope of beginning to absorb it.
+A fascinating read: thoughtful, dense (very dense) with technical detail, and quite provocative. The book is fairly broad, covering topics from evolving code, to the decentralised nature of consciousness, and whether sequence-learning is sufficient for generally intelligent AI. I've never found myself wanting to reread a 600-page tome before, but there's so much information in *What is Intelligence* that I need another go around just to begin absorbing it.
 
-The book is contrarian. Early on, Agüera tells the reader that he believes LLMs are intelligent. It was a sentence I balked at. But through the book he works through his thoughts in such a considered, self-consistent manner that it really does start to bear fruit. I still feel a little innately sceptical of.
+The book is contrarian. Early on, Agüera tells the reader that he believes LLMs are intelligent. I balked at that. But through the book he works through his thoughts in such a considered, self-consistent manner that it really does start to bear fruit. A memorable discussion touches on ['sphexishness'](https://en.wikipedia.org/wiki/Sphex#Use_in_philosophy) --- behaviour that looks intelligent becomes unimpressive once you how it works. There's a fascinating diversion on the decentralised nature of cognition in ocotpuses (or octopi, or octopodes…), and how it could relate to patients whose brains have been split down the middle. I've never read anything quite like it.
 
+ Ultimately, I'm still a little sceptical of Agüera's claims about LLM intelligence, but have grown more open to his views. Regardless, the book is a fascinating, challenging read, that's well worth the time invested.
 
 
 ## May 26 | *Maintenance: Of Everything* by Stewart Brand (4/5)
