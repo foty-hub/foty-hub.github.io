@@ -20,7 +20,7 @@ Have you seen those internet videos of robots backflipping, or running marathons
 
 <figure class="video">
   <img src="/assets/videos/robot_backflip.gif" width="560" height="315" alt="A robot performing a backflip">
-  <figcaption>This backflip is impressive, but in many ways it's simpler than things we do without a second thought.</figcaption>
+  <figcaption>This backflip is attention-grabbing, but in many ways it's simpler than things we do without a second thought.</figcaption>
 </figure>
 
 
@@ -35,9 +35,9 @@ The reason we find it easy to do complex things in the real world is that our br
 - How our stance should change to enable us to pick the object up (you might widen your stance or lean when grasping something heavy)
 - How the object might move once we pick it up (e.g. is it solid, or does it contain a liquid which will slosh around?)
 
-We do all of this effortlessly, day in and day out. And that's just picking something up. Robots get none of that understanding for free, and figuring it out is hard. *That's* why LaundryBot isn't on supermarket shelves yet.
+And that's just picking something up. We do all of this effortlessly, day in and day out, but robots get none of it for free. *That's* why LaundryBot isn't on supermarket shelves yet.
 
-Our exhibit focussed mostly on manual assembly tasks --- a simple task called [RAMP](https://arxiv.org/abs/2305.09644) which would take a 6 year old a minute or two. Part of the point we were making was reliability. We were at the Royal Society for a week straight, running the demo on repeat. Robotics researchers often hit a success rate of 90% and call it job done. But when you're demonstrating to sceptical teenagers, a one-in-ten failure rate is catastrophic. Modern robotics (and [digital AI](https://arxiv.org/abs/2602.16666), for that matter) often falls short of the reliability we'd want for useful autonomy in the messy real world. That's another reason LaundryBot isn't here yet.
+Our exhibit focussed mostly on manual assembly --- a task called [RAMP](https://arxiv.org/abs/2305.09644) which would take a 6 year old a minute or two. Our robot, Frank, managed it in maybe 5 minutes, so not too bad. Part of the point we were making was reliability. We were at the Royal Society for a week straight, running the demo on repeat. Robotics researchers often hit a success rate of 90+% and call it job done. But when you're demonstrating to sceptical teenagers, a one-in-ten failure rate is catastrophic. Modern robotics (and [digital AI](https://arxiv.org/abs/2602.16666), for that matter) often falls short of the reliability we'd want for useful autonomy in the messy real world --- another reason LaundryBot isn't here yet.
 
 In short --- robots probably aren't coming for your job, or coming to kill you or anything that dramatic. They might be able to backflip on TikTok, but they still can't make you a cup of tea. That's what we're working on.
 
@@ -103,3 +103,9 @@ How cool is that? TD learning was invented to help AI learn for itself. But it a
 
 ## *That's not very impressive.*
 This one isn't a question, but it was a comment made by a visiting MP. Thanks for the feedback…
+
+# Conclusion
+Thanks for reading! I had a great time practicing my spiel on the poor, unsuspecting members of the British public that came by our exhibit. That said, I'm still learning a lot about robotics, so these answers will doubtless change as I progress along my PhD and become suitably disillusioned. Either way, I hope this post was fun/interesting/useful!
+
+
+*This post was written by hand (well, keyboard), without the use of LLMs. I know there are lots of em dashes, that's just because I'm a hack.*
